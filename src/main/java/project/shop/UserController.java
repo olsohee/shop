@@ -10,7 +10,11 @@ import org.springframework.web.bind.annotation.RestController;
 import project.shop.dto.JoinRequest;
 import project.shop.dto.JoinResponse;
 import project.shop.entity.User;
+import project.shop.exception.CustomException;
+import project.shop.exception.ErrorCode;
 import project.shop.service.UserService;
+
+import java.util.Optional;
 
 @RestController
 @RequiredArgsConstructor
@@ -26,6 +30,9 @@ public class UserController {
         log.info("컨트롤러");
         log.info("암호화된 비밀번호: {}", passwordEncoder.encode(joinRequest.getPassword()));
 
+        // 이메일 중복 검사
+        duplicateEmail(joinRequest.getEmail());
+
         // 가입
         User user = User.createUser(joinRequest.getUsername(), joinRequest.getEmail(),
                 passwordEncoder.encode(joinRequest.getPassword()), joinRequest.getPhoneNumber());
@@ -34,5 +41,12 @@ public class UserController {
         // 조회
         User findUser = userService.findById(id);
         return new JoinResponse(findUser.getUsername(), findUser.getEmail(), findUser.getPhoneNumber());
+    }
+
+    private void duplicateEmail(String email) {
+
+        if(!userService.findByEmail(email).isEmpty()) {
+            throw new CustomException(ErrorCode.DUPLICATE_EMAIL);
+        }
     }
 }

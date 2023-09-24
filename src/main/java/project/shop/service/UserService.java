@@ -9,6 +9,8 @@ import project.shop.exception.CustomException;
 import project.shop.exception.ErrorCode;
 import project.shop.repository.UserRepository;
 
+import java.util.Optional;
+
 @Service
 @Transactional
 @RequiredArgsConstructor
@@ -25,5 +27,10 @@ public class UserService {
     public User findById(Long id) {
 
         return userRepository.findById(id).orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_USER));
+    }
+
+    public Optional<User> findByEmail(String email) {
+
+        return userRepository.findByEmail(email);
     }
 }
