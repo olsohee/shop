@@ -1,15 +1,23 @@
 package project.shop.entity;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.Getter;
 
 @Entity
 @Getter
 public class OrderProduct {
 
-    @Id
-    @GeneratedValue
-    private Long orderProductId;
+    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "order_product_id")
+    private Long id;
+
+    private Integer price;
+
+    private Integer count;
+
+    @ManyToOne
+    Order order;
+
+    @ManyToOne
+    Product product;
 }

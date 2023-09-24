@@ -1,17 +1,23 @@
 package project.shop.entity;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.Getter;
+
+import java.time.LocalDateTime;
 
 @Entity
 @Getter
 @Table(name = "orders")
 public class Order {
 
-    @Id
-    @GeneratedValue
-    private Long orderId;
+    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "order_id")
+    private Long id;
+
+    private OrderStatus orderStatus;
+
+    private LocalDateTime orderDate;
+
+    @ManyToOne
+    User user;
 }

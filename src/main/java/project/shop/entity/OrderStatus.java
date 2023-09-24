@@ -1,2 +1,6 @@
-package project.shop.entity;public enum OrderStatus {
+package project.shop.entity;
+
+public enum OrderStatus {
+
+    ORDER, CANCEL, DELIVERY, COMPLETE
 }
