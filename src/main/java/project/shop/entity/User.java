@@ -1,7 +1,9 @@
 package project.shop.entity;
 
 import jakarta.persistence.*;
+import lombok.AccessLevel;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -9,6 +11,7 @@ import java.util.List;
 @Entity
 @Getter
 @Table(name = "user")
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class User {
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -34,5 +37,16 @@ public class User {
 
         this.addresses.add(address);
         address.setUser(this);
+    }
+
+    // 생성 메서드
+    public static User createUser(String username, String email, String password, String phoneNumber) {
+
+        User user = new User();
+        user.username = username;
+        user.email = email;
+        user.password = password;
+        user.phoneNumber = phoneNumber;
+        return user;
     }
 }
