@@ -4,16 +4,15 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.bind.annotation.RequestBody;
+import project.shop.entity.RefreshToken;
 import project.shop.entity.User;
 import project.shop.exception.CustomException;
 import project.shop.exception.ErrorCode;
 import project.shop.jwt.JwtTokenDto;
 import project.shop.jwt.JwtTokenUtils;
+import project.shop.repository.RefreshTokenRepository;
 import project.shop.repository.UserRepository;
 import project.shop.security.CustomUserDetails;
-
-import java.util.Optional;
 
 @Service
 @Transactional
@@ -23,6 +22,7 @@ public class UserService {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
     private final JwtTokenUtils jwtTokenUtils;
+    private final RefreshTokenRepository refreshTokenRepository;
 
     public Long join(User user) {
 
@@ -57,6 +57,12 @@ public class UserService {
         }
 
         // JWT 생성
+        JwtTokenDto jwtTokenDto = jwtTokenUtils.generateToken(CustomUserDetails.createCustomUserDetails(user));
+
+        // Refresh Token DB에 저장
+        RefreshToken refreshTokenDto = RefreshToken.createRefreshTokenEntity(jwtTokenDto.getRefreshToken(), user);
+        refreshTokenRepository.save(refreshTokenDto);
+
         return jwtTokenUtils.generateToken(CustomUserDetails.createCustomUserDetails(user));
     }
 }

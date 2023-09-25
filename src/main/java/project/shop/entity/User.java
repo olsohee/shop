@@ -50,6 +50,7 @@ public class User {
         user.email = email;
         user.password = password;
         user.phoneNumber = phoneNumber;
+        user.authority = Authority.ROLE_USER;
         return user;
     }
 }

@@ -13,8 +13,14 @@ import org.springframework.stereotype.Component;
 import java.security.Key;
 import java.time.Instant;
 import java.util.Date;
+import java.util.Optional;
 
 import io.jsonwebtoken.*;
+import project.shop.entity.RefreshToken;
+import project.shop.entity.User;
+import project.shop.exception.CustomException;
+import project.shop.exception.ErrorCode;
+import project.shop.repository.RefreshTokenRepository;
 import project.shop.security.CustomUserDetails;
 
 @Component
@@ -23,10 +29,12 @@ public class JwtTokenUtils {
     private final Key signingKey;
     private final JwtParser jwtParser;
     private final UserDetailsService userDetailsService;
+    private final RefreshTokenRepository refreshTokenRepository;
 
-    public JwtTokenUtils(@Value("${jwt.secret}") String secretKeyPlain, UserDetailsService userDetailsService) {
+    public JwtTokenUtils(@Value("${jwt.secret}") String secretKeyPlain, UserDetailsService userDetailsService, RefreshTokenRepository refreshTokenRepository) {
 
         this.signingKey = Keys.hmacShaKeyFor(secretKeyPlain.getBytes());
+        this.refreshTokenRepository = refreshTokenRepository;
         this.jwtParser = Jwts.parserBuilder().setSigningKey(signingKey).build();;
         this.userDetailsService = userDetailsService;
     }
@@ -99,5 +107,24 @@ public class JwtTokenUtils {
         UsernamePasswordAuthenticationToken authentication
                 = new UsernamePasswordAuthenticationToken(userDetails.getUsername(), userDetails.getPassword(), userDetails.getAuthorities());
         return authentication;
+    }
+
+    /*
+     * request -> token -> 사용자 정보(email) 획득
+     */
+    public String getEmailFromHeader(HttpServletRequest request) {
+
+        String token = getTokenFromRequest(request);
+        String email = jwtParser.parseClaimsJws(token).getBody().getSubject();
+        return email;
+    }
+
+    /*
+     * DB에 저장된 Refresh Token과 일치하는지 확인
+     */
+    public boolean compareRefreshToken(User user, String refreshToken) {
+
+        RefreshToken refreshTokenEntity = refreshTokenRepository.findByUser(user).orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_USER));
+        return (refreshTokenEntity.getRefreshToken().equals(refreshToken)) ? true : false;
     }
 }
