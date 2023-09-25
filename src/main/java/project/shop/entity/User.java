@@ -26,6 +26,9 @@ public class User {
 
     private String phoneNumber;
 
+    @Enumerated
+    private Authority authority;
+
     @OneToMany(mappedBy = "user")
     private List<Address> addresses = new ArrayList<>();
 

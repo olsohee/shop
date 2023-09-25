@@ -1,5 +1,6 @@
 package project.shop.exception;
 
+import io.jsonwebtoken.JwtException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -14,5 +15,12 @@ public class ExceptionController {
 
         log.error("Handle CustomException");
         return ErrorResponse.createErrorResponseEntity(e);
+    }
+
+    @ExceptionHandler(JwtException.class)
+    public ResponseEntity<ErrorResponse> handleJwtException(JwtException e) {
+
+        log.error("Handle JwtException");
+        return ErrorResponse.createErrorResponse(e);
     }
 }
