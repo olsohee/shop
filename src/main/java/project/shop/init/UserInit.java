@@ -1,4 +1,4 @@
-package project.shop.jwt;
+package project.shop.init;
 
 import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
@@ -19,7 +19,7 @@ public class UserInit {
     public void initUser() {
 
         User user = User.createUser("관리자", "admin@naver.com",
-                passwordEncoder.encode("1111"), "01012345678", Authority.ADMIN);
+                passwordEncoder.encode("1111"), "01012345678", Authority.ROLE_ADMIN);
         userRepository.save(user);
     }
 }
