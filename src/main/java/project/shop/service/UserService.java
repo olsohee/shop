@@ -14,7 +14,7 @@ import project.shop.repository.UserRepository;
 import project.shop.security.CustomUserDetails;
 
 @Service
-@Transactional
+@Transactional(readOnly = true)
 @RequiredArgsConstructor
 public class UserService {
 
@@ -23,6 +23,7 @@ public class UserService {
     private final JwtTokenUtils jwtTokenUtils;
     private final RefreshTokenService refreshTokenService;
 
+    @Transactional
     public Long join(User user) {
 
         // 이미 가입된 email인 경우 예외 발생
@@ -45,6 +46,7 @@ public class UserService {
         return userRepository.findByEmail(email).orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_USER));
     }
 
+    @Transactional
     public JwtTokenDto login(String email, String password) {
 
         // 가입된 email인지 확인

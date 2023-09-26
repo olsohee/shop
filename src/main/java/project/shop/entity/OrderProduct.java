@@ -18,6 +18,6 @@ public class OrderProduct {
     @ManyToOne
     Order order;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     Product product;
 }

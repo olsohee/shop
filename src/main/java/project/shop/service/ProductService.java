@@ -13,12 +13,13 @@ import project.shop.repository.ProductRepository;
 import java.util.List;
 
 @Service
-@Transactional
+@Transactional(readOnly = true)
 @RequiredArgsConstructor
 public class ProductService {
 
     private final ProductRepository productRepository;
 
+    @Transactional
     public Long save(Product product) {
 
         productRepository.save(product);
@@ -35,6 +36,7 @@ public class ProductService {
          return productRepository.findAll(pageable);
     }
 
+    @Transactional
     public void update(Long id, String name, Integer price, Integer stock) {
 
         // 조회

@@ -17,7 +17,7 @@ public class Address {
 
     private String zipcode;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     User user;
 
     public void setUser(User user) {

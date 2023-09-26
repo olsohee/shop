@@ -32,7 +32,7 @@ public class User extends BaseEntity {
     @OneToMany(mappedBy = "user")
     private List<Address> addresses = new ArrayList<>();
 
-    @OneToOne
+    @OneToOne(fetch = FetchType.LAZY)
     private Cart cart;
 
     // 연관관계 편의 메서드

@@ -18,6 +18,6 @@ public class Order {
 
     private LocalDateTime orderDate;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     User user;
 }

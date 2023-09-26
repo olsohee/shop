@@ -8,13 +8,14 @@ import project.shop.entity.RefreshToken;
 import project.shop.repository.RefreshTokenRepository;
 
 @Service
-@Transactional
+@Transactional(readOnly = true)
 @RequiredArgsConstructor
 @Slf4j
 public class RefreshTokenService {
 
     private final RefreshTokenRepository refreshTokenRepository;
 
+    @Transactional
     public void save(RefreshToken refreshToken) {
 
         refreshTokenRepository.save(refreshToken);
