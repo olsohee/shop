@@ -1,4 +1,4 @@
-package project.shop;
+package project.shop.controller;
 
 import io.jsonwebtoken.JwtException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -15,7 +15,6 @@ import project.shop.jwt.JwtTokenDto;
 import project.shop.dto.LoginRequest;
 import project.shop.entity.User;
 import project.shop.jwt.JwtTokenUtils;
-import project.shop.repository.RefreshTokenRepository;
 import project.shop.security.CustomUserDetails;
 import project.shop.service.RefreshTokenService;
 import project.shop.service.UserService;
@@ -67,21 +66,24 @@ public class UserController {
         // 요청 헤더에서 Refresh Token 추출
         String refreshToken = jwtTokenUtils.getTokenFromRequest(request);
 
-        // Refresh Token 유효성 검사
+        // 1. Refresh Token 유효성 검사
         jwtTokenUtils.validateToken(refreshToken);
 
-        // DB에 저장된 Refresh Token과 일치하는지 확인
+        // 2. DB에 저장된 Refresh Token과 일치하는지 확인
         String email = jwtTokenUtils.getEmailFromHeader(request);
-        User user = userService.findByEmail(email);
 
-        if(!jwtTokenUtils.compareRefreshToken(user, refreshToken)) {
+        if(!jwtTokenUtils.compareRefreshToken(email, refreshToken)) {
             // 일치하지 않으면 예외 발생
             throw new JwtException("잘못된 Refresh Token입니다");
         }
 
-        // 일치하면 Access Token, Refresh Token 재발급, DB에 새로운 Refresh Token 저장
+        // Access Token, Refresh Token 재발급
+        User user = userService.findByEmail(email);
         JwtTokenDto jwtTokenDto = jwtTokenUtils.generateToken(CustomUserDetails.createCustomUserDetails(user));
-        refreshTokenService.changeRefreshToken(user, jwtTokenDto.getRefreshToken());
+
+        // DB에 새로운 Refresh Token 저장
+        refreshTokenService.save(new RefreshToken(email, refreshToken));
+
         return jwtTokenDto;
     }
 }

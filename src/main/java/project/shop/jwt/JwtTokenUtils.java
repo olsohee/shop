@@ -13,11 +13,9 @@ import org.springframework.stereotype.Component;
 import java.security.Key;
 import java.time.Instant;
 import java.util.Date;
-import java.util.Optional;
 
 import io.jsonwebtoken.*;
 import project.shop.entity.RefreshToken;
-import project.shop.entity.User;
 import project.shop.exception.CustomException;
 import project.shop.exception.ErrorCode;
 import project.shop.repository.RefreshTokenRepository;
@@ -122,9 +120,9 @@ public class JwtTokenUtils {
     /*
      * DB에 저장된 Refresh Token과 일치하는지 확인
      */
-    public boolean compareRefreshToken(User user, String refreshToken) {
+    public boolean compareRefreshToken(String email, String refreshToken) {
 
-        RefreshToken refreshTokenEntity = refreshTokenRepository.findByUser(user).orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_USER));
-        return (refreshTokenEntity.getRefreshToken().equals(refreshToken)) ? true : false;
+        RefreshToken entity = refreshTokenRepository.findByEmail(email).orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_USER));
+        return (entity.getRefreshToken().equals(refreshToken)) ? true : false;
     }
 }

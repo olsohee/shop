@@ -10,7 +10,6 @@ import project.shop.exception.CustomException;
 import project.shop.exception.ErrorCode;
 import project.shop.jwt.JwtTokenDto;
 import project.shop.jwt.JwtTokenUtils;
-import project.shop.repository.RefreshTokenRepository;
 import project.shop.repository.UserRepository;
 import project.shop.security.CustomUserDetails;
 
@@ -22,7 +21,7 @@ public class UserService {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
     private final JwtTokenUtils jwtTokenUtils;
-    private final RefreshTokenRepository refreshTokenRepository;
+    private final RefreshTokenService refreshTokenService;
 
     public Long join(User user) {
 
@@ -60,8 +59,7 @@ public class UserService {
         JwtTokenDto jwtTokenDto = jwtTokenUtils.generateToken(CustomUserDetails.createCustomUserDetails(user));
 
         // Refresh Token DB에 저장
-        RefreshToken refreshTokenDto = RefreshToken.createRefreshTokenEntity(jwtTokenDto.getRefreshToken(), user);
-        refreshTokenRepository.save(refreshTokenDto);
+        refreshTokenService.save(new RefreshToken(email, jwtTokenDto.getRefreshToken()));
 
         return jwtTokenUtils.generateToken(CustomUserDetails.createCustomUserDetails(user));
     }
