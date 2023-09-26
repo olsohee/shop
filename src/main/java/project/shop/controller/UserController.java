@@ -11,12 +11,14 @@ import org.springframework.web.bind.annotation.RestController;
 import project.shop.dto.user.JoinRequest;
 import project.shop.dto.user.JoinResponse;
 import project.shop.entity.Authority;
+import project.shop.entity.Cart;
 import project.shop.entity.RefreshToken;
 import project.shop.jwt.JwtTokenDto;
 import project.shop.dto.user.LoginRequest;
 import project.shop.entity.User;
 import project.shop.jwt.JwtTokenUtils;
 import project.shop.security.CustomUserDetails;
+import project.shop.service.CartService;
 import project.shop.service.RefreshTokenService;
 import project.shop.service.UserService;
 
@@ -26,6 +28,7 @@ import project.shop.service.UserService;
 public class UserController {
 
     private final UserService userService;
+    private final CartService cartService;
     private final PasswordEncoder passwordEncoder;
     private final JwtTokenUtils jwtTokenUtils;
     private final RefreshTokenService refreshTokenService;
@@ -38,8 +41,12 @@ public class UserController {
     public JoinResponse join(@RequestBody JoinRequest dto) {
 
         // 가입
+        Cart cart = Cart.createCart();
+        cartService.save(cart);
+
         User user = User.createUser(dto.getUsername(), dto.getEmail(),
-                passwordEncoder.encode(dto.getPassword()), dto.getPhoneNumber(), Authority.ROLE_USER);
+                passwordEncoder.encode(dto.getPassword()), dto.getPhoneNumber(),
+                Authority.ROLE_USER, cart);
         Long id = userService.join(user);
 
         // 조회

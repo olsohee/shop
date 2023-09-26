@@ -43,7 +43,9 @@ public class User extends BaseEntity {
     }
 
     // 생성 메서드
-    public static User createUser(String username, String email, String password, String phoneNumber, Authority authority) {
+    public static User createUser(String username, String email,
+                                  String password, String phoneNumber,
+                                  Authority authority, Cart cart) {
 
         User user = new User();
         user.username = username;
@@ -51,6 +53,7 @@ public class User extends BaseEntity {
         user.password = password;
         user.phoneNumber = phoneNumber;
         user.authority = authority;
+        user.cart = cart; // 사용자 생성시 Cart도 함께 생성됨
         return user;
     }
 }

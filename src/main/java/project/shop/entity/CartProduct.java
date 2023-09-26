@@ -1,8 +1,10 @@
 package project.shop.entity;
 
 import jakarta.persistence.*;
+import lombok.Getter;
 
 @Entity
+@Getter
 public class CartProduct {
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -18,4 +20,19 @@ public class CartProduct {
 
     @ManyToOne(fetch = FetchType.LAZY)
     Product product;
+
+    // 생성 메서드
+    public static CartProduct createCartProduct(Product product, Integer price, Integer count) {
+
+        CartProduct cartProduct = new CartProduct();
+        cartProduct.product = product;
+        cartProduct.price = price;
+        cartProduct.count = count;
+        return cartProduct;
+    }
+
+    // 수정 메서드
+    public void setCart(Cart cart) {
+        this.cart = cart;
+    }
 }
