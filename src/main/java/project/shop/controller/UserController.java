@@ -8,11 +8,12 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
-import project.shop.dto.JoinRequest;
-import project.shop.dto.JoinResponse;
+import project.shop.dto.user.JoinRequest;
+import project.shop.dto.user.JoinResponse;
+import project.shop.entity.Authority;
 import project.shop.entity.RefreshToken;
 import project.shop.jwt.JwtTokenDto;
-import project.shop.dto.LoginRequest;
+import project.shop.dto.user.LoginRequest;
 import project.shop.entity.User;
 import project.shop.jwt.JwtTokenUtils;
 import project.shop.security.CustomUserDetails;
@@ -34,11 +35,11 @@ public class UserController {
      * 회원가입
      */
     @PostMapping("/join")
-    public JoinResponse join(@RequestBody JoinRequest joinRequest) {
+    public JoinResponse join(@RequestBody JoinRequest dto) {
 
         // 가입
-        User user = User.createUser(joinRequest.getUsername(), joinRequest.getEmail(),
-                passwordEncoder.encode(joinRequest.getPassword()), joinRequest.getPhoneNumber());
+        User user = User.createUser(dto.getUsername(), dto.getEmail(),
+                passwordEncoder.encode(dto.getPassword()), dto.getPhoneNumber(), Authority.ROLE_USER);
         Long id = userService.join(user);
 
         // 조회
@@ -51,9 +52,9 @@ public class UserController {
      * 로그인
      */
     @PostMapping("/login")
-    public JwtTokenDto login(@RequestBody LoginRequest loginRequest) {
+    public JwtTokenDto login(@RequestBody LoginRequest dto) {
 
-        return userService.login(loginRequest.getEmail(), loginRequest.getPassword());
+        return userService.login(dto.getEmail(), dto.getPassword());
     }
 
     /**

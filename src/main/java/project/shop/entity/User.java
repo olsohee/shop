@@ -26,7 +26,7 @@ public class User {
 
     private String phoneNumber;
 
-    @Enumerated
+    @Enumerated(value = EnumType.STRING)
     private Authority authority;
 
     @OneToMany(mappedBy = "user")
@@ -43,14 +43,14 @@ public class User {
     }
 
     // 생성 메서드
-    public static User createUser(String username, String email, String password, String phoneNumber) {
+    public static User createUser(String username, String email, String password, String phoneNumber, Authority authority) {
 
         User user = new User();
         user.username = username;
         user.email = email;
         user.password = password;
         user.phoneNumber = phoneNumber;
-        user.authority = Authority.ROLE_USER;
+        user.authority = authority;
         return user;
     }
 }
