@@ -6,9 +6,11 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDateTime;
+
 @Entity
 @Getter
-public class Product {
+public class Product extends BaseEntity{
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "product_id")
