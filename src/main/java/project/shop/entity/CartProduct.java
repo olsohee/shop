@@ -41,6 +41,11 @@ public class CartProduct {
         this.count += updateCount;
     }
 
+    public void decreaseCount(Integer updateCount) {
+
+        this.count -= updateCount;
+    }
+
     public void updateCount(Integer updateCount) {
 
         this.count = updateCount;

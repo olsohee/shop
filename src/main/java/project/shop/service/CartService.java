@@ -55,4 +55,22 @@ public class CartService {
             cart.decreaseTotalPrice(decreaseCount * cartProduct.getPrice());
         }
     }
+
+    // 장바구니의 CartProduct 수량 1개 늘리기
+    @Transactional
+    public void increaseCartProductCount(Cart cart, CartProduct cartProduct) {
+
+        cartProduct.increaseCount(1);
+        cart.increaseTotalCount(1);
+        cart.increaseTotalPrice(cartProduct.getPrice());
+    }
+
+    // 장바구니의 CartProduct 수량 1개 줄이기
+    @Transactional
+    public void decreaseCartProductCount(Cart cart, CartProduct cartProduct) {
+
+        cartProduct.decreaseCount(1);
+        cart.decreaseTotalCount(1);
+        cart.decreaseTotalPrice(cartProduct.getPrice());
+    }
 }
