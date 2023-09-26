@@ -62,6 +62,11 @@ public class CartService {
     @Transactional
     public void increaseCartProductCount(Cart cart, CartProduct cartProduct) {
 
+        // 현재 수량이 재고 수량이면 증가 불가
+        if(cartProduct.getCount() == cartProduct.getProduct().getStock()) {
+            throw new CustomException(ErrorCode.CANNOT_INCREASE_COUNT);
+        }
+
         cartProduct.increaseCount(1);
         cart.increaseTotalCount(1);
         cart.increaseTotalPrice(cartProduct.getPrice());

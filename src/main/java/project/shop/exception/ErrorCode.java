@@ -13,7 +13,8 @@ public enum ErrorCode {
     NOT_FOUND_CART_PRODUCT(HttpStatus.NOT_FOUND, "장바구니에서 해당 상품을 찾을 수 없습니다"),
     DUPLICATE_EMAIL(HttpStatus.BAD_REQUEST, "중복된 이메일입니다"),
     INCORRECT_PASSWORD(HttpStatus.BAD_REQUEST, "잘못된 패스워드입니다"),
-    CANNOT_DECREASE_COUNT(HttpStatus.BAD_REQUEST, "최소 수량은 1개입니다")
+    CANNOT_DECREASE_COUNT(HttpStatus.BAD_REQUEST, "최소 수량은 1개입니다"),
+    CANNOT_INCREASE_COUNT(HttpStatus.BAD_REQUEST, "해당 상품의 최대 주문 가능 수량입니다")
     ;
 
     private final HttpStatus httpStatus;
