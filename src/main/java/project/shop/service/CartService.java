@@ -31,18 +31,19 @@ public class CartService {
         cart.addCartProduct(cartProduct);
 
         // Cart의 totalPrice, totalCount 수정
-        cart.addTotalCount(cartProduct.getCount());
-        cart.addTotalPrice(cartProduct.getPrice() * cartProduct.getCount());
+        cart.increaseTotalCount(cartProduct.getCount());
+        cart.increaseTotalPrice(cartProduct.getPrice() * cartProduct.getCount());
     }
 
+    // 이미 장바구니에 존재하는 상품의 갯수 올리기
     @Transactional
     public void updateCartProductCount(Cart cart, CartProduct cartProduct, Integer updateCount) {
 
-        // CartProduct의 가격 수정
-        cartProduct.updateCount(updateCount);
+        // CartProduct의 count 수정
+        cartProduct.increaseCount(updateCount);
 
         // Cart의 totalPrice, totalCount 수정
-        cart.addTotalCount(updateCount);
-        cart.addTotalPrice(updateCount * cartProduct.getPrice());
+        cart.increaseTotalCount(updateCount);
+        cart.increaseTotalPrice(updateCount * cartProduct.getPrice());
     }
 }

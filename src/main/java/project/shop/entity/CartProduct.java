@@ -36,7 +36,7 @@ public class CartProduct {
         this.cart = cart;
     }
 
-    public void updateCount(Integer updateCount) {
+    public void increaseCount(Integer updateCount) {
 
         this.count += updateCount;
     }
