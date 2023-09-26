@@ -29,24 +29,26 @@ public class CartController {
      * 상품 장바구니에 담기
      */
     @PostMapping("/products/{productId}/cart")
-    public void addCart(HttpServletRequest request,
-                        @PathVariable Long productId, @RequestParam Integer count) {
+    public ReadCartResponse addCart(HttpServletRequest request,
+                                    @PathVariable Long productId, @RequestParam Integer count) {
 
         // 사용자, 장바구니 조회
         User user = findUserFromRequest(request);
         Cart cart = user.getCart();
 
-        // 해당 상품이 이미 장바구니에 담겼는지 아닌지 확인
-        Product product = productService.findById(productId);
-        CartProduct findCartProduct = isDuplicateProduct(product, cart);
+        // 해당 상품이 이미 장바구니에 있는 상품인지 확인
+        CartProduct findCartProduct = findDuplicateCartProduct(productId, cart);
         if(findCartProduct != null) {
             // 이미 있는 상품이면 장바구니의 갯수만 수정
             cartService.updateCartProductCount(cart, findCartProduct, count);
         } else {
             // 새로운 상품이면 CartProduct 생성해서 Cart에 담아주기
+            Product product = productService.findById(productId);
             CartProduct cartProduct = CartProduct.createCartProduct(product, product.getPrice(), count);
             cartService.addCartProduct(cart, cartProduct);
         }
+
+        return ReadCartResponse.createResponse(cart.getCartProducts(), cart);
     }
 
     /**
@@ -69,11 +71,11 @@ public class CartController {
     }
 
     // 장바구니에 이미 있는 상품인지 확인
-    private CartProduct isDuplicateProduct(Product product, Cart cart) {
+    private CartProduct findDuplicateCartProduct(Long id, Cart cart) {
 
         List<CartProduct> cartProducts = cart.getCartProducts();
         for(CartProduct cartProduct : cartProducts) {
-            if(cartProduct.getProduct().getName().equals(product.getName())) {
+            if(cartProduct.getProduct().getId().equals(id)) {
                 return cartProduct;
             }
         }
