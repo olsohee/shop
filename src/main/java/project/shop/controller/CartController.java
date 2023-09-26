@@ -68,7 +68,7 @@ public class CartController {
 
     /**
      * [PUT] /cart/{productId}/increase
-     * 상품 수량 증가
+     * 상품 수량 증발
      */
     @PutMapping("/cart/{productId}/increase")
     public ReadCartResponse increaseCount(HttpServletRequest request,

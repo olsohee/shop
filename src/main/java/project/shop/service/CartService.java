@@ -5,6 +5,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import project.shop.entity.Cart;
 import project.shop.entity.CartProduct;
+import project.shop.exception.CustomException;
+import project.shop.exception.ErrorCode;
 import project.shop.repository.CartProductRepository;
 import project.shop.repository.CartRepository;
 
@@ -68,6 +70,11 @@ public class CartService {
     // 장바구니의 CartProduct 수량 1개 줄이기
     @Transactional
     public void decreaseCartProductCount(Cart cart, CartProduct cartProduct) {
+
+        // 현재 수량이 1개이면 감소 불가
+        if(cartProduct.getCount() == 1) {
+            throw new CustomException(ErrorCode.CANNOT_DECREASE_COUNT);
+        }
 
         cartProduct.decreaseCount(1);
         cart.decreaseTotalCount(1);
