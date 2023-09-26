@@ -1,10 +1,7 @@
 package project.shop.entity;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.time.LocalDateTime;
 
@@ -30,5 +27,13 @@ public class Product extends BaseEntity{
         product.price = price;
         product.stock = stock;
         return product;
+    }
+
+    // 수정 메서드
+    public void updateProduct(String name, Integer price, Integer stock) {
+
+        this.name = name;
+        this.price = price;
+        this.stock = stock;
     }
 }

@@ -34,4 +34,13 @@ public class ProductService {
 
          return productRepository.findAll(pageable);
     }
+
+    public void update(Long id, String name, Integer price, Integer stock) {
+
+        // 조회
+        Product product = findById(id);
+
+        // 수정
+        product.updateProduct(name, price, stock);
+    }
 }
