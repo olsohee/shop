@@ -35,15 +35,24 @@ public class CartService {
         cart.increaseTotalPrice(cartProduct.getPrice() * cartProduct.getCount());
     }
 
-    // 이미 장바구니에 존재하는 상품의 갯수 올리기
+    // 이미 장바구니에 존재하는 상품의 갯수 수정
     @Transactional
     public void updateCartProductCount(Cart cart, CartProduct cartProduct, Integer updateCount) {
 
-        // CartProduct의 count 수정
-        cartProduct.increaseCount(updateCount);
+        Integer oldCount = cartProduct.getCount();
 
-        // Cart의 totalPrice, totalCount 수정
-        cart.increaseTotalCount(updateCount);
-        cart.increaseTotalPrice(updateCount * cartProduct.getPrice());
+        if(oldCount < updateCount) {
+            // 갯수 올리기
+            int increaseCount = updateCount - oldCount;
+            cartProduct.updateCount(updateCount);
+            cart.increaseTotalCount(increaseCount);
+            cart.increaseTotalPrice(increaseCount * cartProduct.getPrice());
+        } else {
+            // 갯수 줄이기
+            int decreaseCount = oldCount - updateCount;
+            cartProduct.updateCount(updateCount);
+            cart.decreaseTotalCount(decreaseCount);
+            cart.decreaseTotalPrice(decreaseCount * cartProduct.getPrice());
+        }
     }
 }

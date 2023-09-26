@@ -41,13 +41,23 @@ public class Cart {
     }
 
     // 수정 메서드
-    public void increaseTotalCount(Integer updateCount) {
+    public void increaseTotalCount(Integer increaseCount) {
 
-        this.totalCount += updateCount;
+        this.totalCount += increaseCount;
     }
 
-    public void increaseTotalPrice(Integer updatePrice) {
+    public void increaseTotalPrice(Integer increasePrice) {
 
-        this.totalPrice += updatePrice;
+        this.totalPrice += increasePrice;
+    }
+
+    public void decreaseTotalCount(Integer decreaseCount) {
+
+        this.totalCount -= decreaseCount;
+    }
+
+    public void decreaseTotalPrice(Integer decreasePrice) {
+
+        this.totalPrice -= decreasePrice;
     }
 }
