@@ -28,6 +28,8 @@ public class Cart {
     public static Cart createCart() {
 
         Cart cart = new Cart();
+        cart.totalCount = 0;
+        cart.totalPrice = 0;
         return cart;
     }
 
@@ -36,5 +38,16 @@ public class Cart {
 
         this.cartProducts.add(cartProduct);
         cartProduct.setCart(this);
+    }
+
+    // 수정 메서드
+    public void addTotalCount(Integer updateCount) {
+
+        this.totalCount += updateCount;
+    }
+
+    public void addTotalPrice(Integer updatePrice) {
+
+        this.totalPrice += updatePrice;
     }
 }

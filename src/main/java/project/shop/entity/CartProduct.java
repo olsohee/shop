@@ -35,4 +35,9 @@ public class CartProduct {
     public void setCart(Cart cart) {
         this.cart = cart;
     }
+
+    public void updateCount(Integer updateCount) {
+
+        this.count += updateCount;
+    }
 }
