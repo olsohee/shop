@@ -29,7 +29,7 @@ public class SecurityConfig {
 
                 .authorizeHttpRequests(authHttp ->
                         authHttp.requestMatchers("/join", "/login", "/recreation").permitAll()
-                                .requestMatchers(HttpMethod.POST, "product").hasRole("ADMIN")
+                                .requestMatchers("admin/**").hasRole("ADMIN")
                                 .anyRequest().authenticated())
                 .addFilterBefore(new JwtAuthenticationFilter(jwtTokenUtils), UsernamePasswordAuthenticationFilter.class)
 
