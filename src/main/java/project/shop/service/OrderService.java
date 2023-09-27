@@ -55,14 +55,26 @@ public class OrderService {
         return OrderResponse.createResponse(order, orderProducts);
     }
 
-    public OrderListResponse findListByUser(HttpServletRequest request) {
+    public OrderListResponse findOrderList(HttpServletRequest request) {
 
         User user = this.findUserFromRequest(request);
         List<Order> orders = orderRepository.findByUser(user);
         return OrderListResponse.createResponse(orders);
     }
 
+    public OrderResponse findOrder(HttpServletRequest request, Long orderId) {
+
+        Order order = orderRepository.findById(orderId).orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_ORDER));
+        User user = this.findUserFromRequest(request);
+        if(!order.getUser().equals(user)) {
+            throw new CustomException(ErrorCode.UNAUTHORIZED);
+        }
+
+        return OrderResponse.createResponse(order, order.getOrderProducts());
+    }
+
     //== private 메서드 ==//
+
     /*
      * request를 통해 사용자 조회
      */

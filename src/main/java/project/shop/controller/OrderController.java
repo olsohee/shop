@@ -2,17 +2,11 @@ package project.shop.controller;
 
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import project.shop.dto.order.OrderListResponse;
 import project.shop.dto.order.OrderRequest;
 import project.shop.dto.order.OrderResponse;
-import project.shop.entity.User;
-import project.shop.jwt.JwtTokenUtils;
 import project.shop.service.OrderService;
-import project.shop.service.UserService;
 
 @RestController
 @RequiredArgsConstructor
@@ -25,7 +19,7 @@ public class OrderController {
      * 주문하기
      */
     @PostMapping("/order")
-    public OrderResponse checkout(HttpServletRequest request, @RequestBody OrderRequest dto) {
+    public OrderResponse order(HttpServletRequest request, @RequestBody OrderRequest dto) {
 
         return orderService.order(request, dto);
     }
@@ -37,13 +31,19 @@ public class OrderController {
     @GetMapping("/orders")
     public OrderListResponse findOrderList(HttpServletRequest request) {
 
-        return orderService.findListByUser(request);
+        return orderService.findOrderList(request);
     }
 
     /**
      * [GET] /orders/{orderId}
      * 주문 상세 조회
      */
+    @GetMapping("/orders/{orderId}")
+    public OrderResponse findOrder(HttpServletRequest request,
+                                   @PathVariable Long orderId) {
+
+        return orderService.findOrder(request, orderId);
+    }
 
     /**
      * [POST] /orders/{orderId}/cancel
