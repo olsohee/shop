@@ -5,6 +5,8 @@ import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.aspectj.weaver.ast.Or;
+import project.shop.exception.CustomException;
+import project.shop.exception.ErrorCode;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -61,6 +63,10 @@ public class Order {
 
     //== 비즈니스 메서드 ==//
     public void cancel() {
+
+        if(this.getOrderStatus() == OrderStatus.DELIVERY || (this.getOrderStatus() == OrderStatus.COMPLETE)) {
+            throw new CustomException(ErrorCode.CANNOT_ORDER_CANCEL);
+        }
 
         this.orderStatus = OrderStatus.CANCEL;
     }

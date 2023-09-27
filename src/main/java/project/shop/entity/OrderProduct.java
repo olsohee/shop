@@ -4,6 +4,8 @@ import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import project.shop.exception.CustomException;
+import project.shop.exception.ErrorCode;
 
 @Entity
 @Getter
@@ -37,6 +39,7 @@ public class OrderProduct {
 
     //== 비즈니스 메서드 ==//
     public void setOrder(Order order) {
+
         this.order = order;
     }
 }
