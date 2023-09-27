@@ -29,10 +29,10 @@ public class OrderController {
     private final UserService userService;
 
     /**
-     * [POST] /checkout
+     * [POST] /order
      * 주문하기
      */
-    @PostMapping("/checkout")
+    @PostMapping("/order")
     public OrderResponse checkout(HttpServletRequest request, @RequestBody OrderRequest dto) {
 
         // 저장
@@ -44,6 +44,8 @@ public class OrderController {
 
         return OrderResponse.createResponse(findOrder, findOrder.getOrderProducts());
     }
+
+
 
     // request를 통해 사용자 조회
     private User findUserFromRequest(HttpServletRequest request) {
