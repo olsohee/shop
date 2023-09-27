@@ -13,6 +13,8 @@ import project.shop.exception.ErrorCode;
 import project.shop.jwt.JwtTokenUtils;
 import project.shop.repository.UserRepository;
 
+import java.util.List;
+
 @Service
 @Transactional(readOnly = true)
 @RequiredArgsConstructor
@@ -32,6 +34,23 @@ public class MypageService {
 
         // 회원 주소록에 추가
         user.addAddress(address);
+
+        return AddressListResponse.createResponse(user.getAddresses());
+    }
+
+    @Transactional
+    public AddressListResponse delete(HttpServletRequest request, Long addressId) {
+
+        // User
+        User user = this.findUserFromRequest(request);
+
+        List<Address> addresses = user.getAddresses();
+        for (Address address : addresses) {
+            if(address.getId() == addressId) {
+                user.getAddresses().remove(address);
+                break;
+            }
+        }
 
         return AddressListResponse.createResponse(user.getAddresses());
     }

@@ -2,6 +2,7 @@ package project.shop.controller;
 
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -26,14 +27,14 @@ public class MypageController {
         return mypageService.create(request, dto);
     }
 
-//    /**
-//     * [POST] /mypage/edit/address
-//     * 주소 삭제
-//     */
-//    @PostMapping("/mypage/edit/address/create")
-//    public void editAddress(HttpServletRequest request,
-//                            @RequestBody CreateAddressRequest dto) {
-//
-//        addressService.
-//    }
+    /**
+     * [POST] /mypage/edit/address/delete
+     * 주소 삭제
+     */
+    @PostMapping("/mypage/edit/address/{addressId}/delete")
+    public AddressListResponse deleteAddress(HttpServletRequest request,
+                                             @PathVariable Long addressId) {
+
+        return mypageService.delete(request, addressId);
+    }
 }
