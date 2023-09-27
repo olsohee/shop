@@ -22,6 +22,10 @@ public class Order {
 
     private LocalDateTime orderDate;
 
+    private Integer totalCount;
+
+    private Integer totalPrice;
+
     @ManyToOne(fetch = FetchType.LAZY)
     private User user;
 
@@ -36,14 +40,18 @@ public class Order {
     }
 
     // 생성 메서드
-    public static Order createOrder(User user, OrderProduct ... orderProducts) {
+    public static Order createOrder(User user, List<OrderProduct> orderProducts) {
 
         Order order = new Order();
         order.orderStatus = OrderStatus.ORDER;
         order.orderDate = LocalDateTime.now();
         order.user = user;
+        order.totalCount = 0;
+        order.totalPrice = 0;
         for (OrderProduct orderProduct : orderProducts) {
             order.addOrderProduct(orderProduct);
+            order.totalCount += orderProduct.getCount();
+            order.totalPrice += orderProduct.getPrice() * orderProduct.getCount();
         }
         return order;
     }

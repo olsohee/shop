@@ -16,6 +16,7 @@ import project.shop.service.OrderService;
 import project.shop.service.ProductService;
 import project.shop.service.UserService;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -36,13 +37,12 @@ public class OrderController {
 
         // 저장
         User user = findUserFromRequest(request);
-        Product product = productService.findById(dto.getProductId());
-        Long orderId = orderService.order(user, product, dto.getCount());
+        Long orderId = orderService.order(user, dto.getOrderProducts());
 
         // 조회
         Order findOrder = orderService.findById(orderId);
 
-        return OrderResponse.createResponse(orderId, product.getName(), product.getPrice(), dto.getCount(), findOrder.getOrderStatus());
+        return OrderResponse.createResponse(findOrder, findOrder.getOrderProducts());
     }
 
     // request를 통해 사용자 조회
