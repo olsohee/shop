@@ -32,7 +32,7 @@ public class User extends BaseEntity {
     @OneToMany(mappedBy = "user")
     private List<Address> addresses = new ArrayList<>();
 
-    @OneToOne(fetch = FetchType.LAZY)
+    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private Cart cart;
 
     // 연관관계 편의 메서드
@@ -45,7 +45,7 @@ public class User extends BaseEntity {
     // 생성 메서드
     public static User createUser(String username, String email,
                                   String password, String phoneNumber,
-                                  Authority authority, Cart cart) {
+                                  Authority authority) {
 
         User user = new User();
         user.username = username;
@@ -53,7 +53,7 @@ public class User extends BaseEntity {
         user.password = password;
         user.phoneNumber = phoneNumber;
         user.authority = authority;
-        user.cart = cart; // 사용자 생성시 Cart도 함께 생성됨
+        user.cart = Cart.createCart(); // 사용자 생성시 Cart도 함께 생성됨
         return user;
     }
 }

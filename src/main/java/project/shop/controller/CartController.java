@@ -35,23 +35,7 @@ public class CartController {
     public ReadCartResponse addCart(HttpServletRequest request,
                                     @PathVariable Long productId, @RequestParam Integer count) {
 
-        // 사용자, 장바구니 조회
-        User user = findUserFromRequest(request);
-        Cart cart = user.getCart();
-
-        // 해당 상품이 이미 장바구니에 있는 상품인지 확인
-        CartProduct findCartProduct = findDuplicateCartProduct(productId, cart);
-        if(findCartProduct != null) {
-            // 이미 있는 상품이면 장바구니의 갯수만 수정
-            cartService.updateCartProductCount(cart, findCartProduct, count);
-        } else {
-            // 새로운 상품이면 CartProduct 생성해서 Cart에 담아주기
-            Product product = productService.findById(productId);
-            CartProduct cartProduct = CartProduct.createCartProduct(product, product.getPrice(), count);
-            cartService.addCartProduct(cart, cartProduct);
-        }
-
-        return ReadCartResponse.createResponse(cart.getCartProducts(), cart);
+        return cartService.addCartProduct(request, productId, count);
     }
 
     /**
@@ -61,9 +45,7 @@ public class CartController {
     @GetMapping("/cart")
     public ReadCartResponse readCart(HttpServletRequest request) {
 
-        User user = findUserFromRequest(request);
-        Cart cart = user.getCart();
-        return ReadCartResponse.createResponse(cart.getCartProducts(), cart);
+        return cartService.findCart(request);
     }
 
     /**
@@ -74,14 +56,7 @@ public class CartController {
     public ReadCartResponse increaseCount(HttpServletRequest request,
                                           @PathVariable Long productId) {
 
-        User user = findUserFromRequest(request);
-        Cart cart = user.getCart();
-
-        CartProduct cartProduct = findByProductId(productId, cart.getCartProducts())
-                .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_CART_PRODUCT));
-
-        cartService.increaseCartProductCount(cart, cartProduct);
-        return ReadCartResponse.createResponse(cart.getCartProducts(), cart);
+        return cartService.increaseCartProductCount(request, productId);
     }
 
     /**
@@ -92,43 +67,11 @@ public class CartController {
     public ReadCartResponse decreaseCount(HttpServletRequest request,
                                           @PathVariable Long productId) {
 
-        User user = findUserFromRequest(request);
-        Cart cart = user.getCart();
-
-        CartProduct cartProduct = findByProductId(productId, cart.getCartProducts())
-                .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_CART_PRODUCT));
-
-        cartService.decreaseCartProductCount(cart, cartProduct);
-        return ReadCartResponse.createResponse(cart.getCartProducts(), cart);
+        return cartService.decreaseCartProductCount(request, productId);
     }
 
-    // request를 통해 사용자 조회
-    private User findUserFromRequest(HttpServletRequest request) {
 
-        String email = jwtTokenUtils.getEmailFromHeader(request);
-        return userService.findByEmail(email);
-    }
 
-    // 장바구니에 이미 있는 상품인지 확인
-    private CartProduct findDuplicateCartProduct(Long id, Cart cart) {
 
-        List<CartProduct> cartProducts = cart.getCartProducts();
-        for(CartProduct cartProduct : cartProducts) {
-            if(cartProduct.getProduct().getId().equals(id)) {
-                return cartProduct;
-            }
-        }
-        return null;
-    }
 
-    // CartProduct 리스트에서 인자로 주어진 productId를 갖는 CartProduct 추출
-    public Optional<CartProduct> findByProductId(Long productId, List<CartProduct> cartProducts) {
-
-        for(CartProduct cartProduct : cartProducts) {
-            if(cartProduct.getProduct().getId().equals(productId)) {
-                return Optional.of(cartProduct);
-            }
-        }
-        return Optional.empty();
-    }
 }

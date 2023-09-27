@@ -9,10 +9,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 import project.shop.dto.product.ReadProductResponse;
-import project.shop.entity.Product;
 import project.shop.service.ProductService;
 
-import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
@@ -27,8 +25,7 @@ public class ProductController {
     @GetMapping("/products")
     public Page<ReadProductResponse> findAll(@PageableDefault(size = 5, sort = "createdDate", direction = Sort.Direction.DESC) Pageable pageable) {
 
-        Page<Product> page = productService.findAll(pageable);
-        return page.map(product -> ReadProductResponse.createResponse(product));
+        return productService.findAll(pageable);
     }
 
     /**
@@ -38,7 +35,6 @@ public class ProductController {
     @GetMapping("/products/{productId}")
     public ReadProductResponse findOne(@PathVariable Long productId) {
 
-        Product product = productService.findById(productId);
-        return ReadProductResponse.createResponse(product);
+        return productService.findById(productId);
     }
 }

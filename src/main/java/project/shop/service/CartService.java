@@ -1,32 +1,156 @@
 package project.shop.service;
 
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import project.shop.entity.Cart;
-import project.shop.entity.CartProduct;
+import project.shop.dto.cart.ReadCartResponse;
+import project.shop.dto.user.JoinRequest;
+import project.shop.dto.user.JoinResponse;
+import project.shop.entity.*;
 import project.shop.exception.CustomException;
 import project.shop.exception.ErrorCode;
+import project.shop.jwt.JwtTokenUtils;
 import project.shop.repository.CartProductRepository;
 import project.shop.repository.CartRepository;
+import project.shop.repository.ProductRepository;
+import project.shop.repository.UserRepository;
+
+import java.util.List;
+import java.util.Optional;
 
 @Transactional(readOnly = true)
 @Service
 @RequiredArgsConstructor
 public class CartService {
 
-    private final CartRepository cartRepository;
+    private final JwtTokenUtils jwtTokenUtils;
     private final CartProductRepository cartProductRepository;
+    private final ProductRepository productRepository;
+    private final UserRepository userRepository;
 
+    /*
+     * 해당 상품이 장바구니에 이미 있는 상품인지, 아닌지를 판단하여 장바구니에 상품 추가
+     */
     @Transactional
-    public Long save(Cart cart) {
+    public ReadCartResponse addCartProduct(HttpServletRequest request, Long productId, Integer count) {
 
-        cartRepository.save(cart);
-        return cart.getId();
+        // User
+        User user = this.findUserFromRequest(request);
+
+        // Cart
+        Cart cart = user.getCart();
+
+        // 해당 상품이 이미 장바구니에 있는 상품인지 확인
+        CartProduct findCartProduct = findDuplicateCartProduct(cart, productId);
+
+        if(findCartProduct != null) {
+            // 이미 있는 상품이면 장바구니의 갯수만 수정
+            this.updateCartProductCount(cart, findCartProduct, count);
+        } else {
+            // 새로운 상품이면 CartProduct 생성해서 Cart에 담아주기
+            Product product = productRepository.findById(productId).orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_ORDER));
+            CartProduct cartProduct = CartProduct.createCartProduct(product, product.getPrice(), count);
+            this.addNewCartProduct(cart, cartProduct);
+        }
+
+        return ReadCartResponse.createResponse(cart.getCartProducts(), cart);
     }
 
+    /*
+     * 사용자의 Cart 조회
+     */
+    public ReadCartResponse findCart(HttpServletRequest request) {
+
+        User user = this.findUserFromRequest(request);
+        Cart cart = user.getCart();
+        return ReadCartResponse.createResponse(cart.getCartProducts(), cart);
+    }
+
+    /*
+     * 장바구니에 담긴 상품 수량 증가
+     */
     @Transactional
-    public void addCartProduct(Cart cart, CartProduct cartProduct) {
+    public ReadCartResponse increaseCartProductCount(HttpServletRequest request, Long productId) {
+
+        // User 조회
+        User user = this.findUserFromRequest(request);
+
+        // Cart 조회
+        Cart cart = user.getCart();
+
+        CartProduct cartProduct = this.findByProductId(productId, cart.getCartProducts())
+                .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_CART_PRODUCT));
+
+        // 현재 수량이 재고 수량이면 증가 불가
+        if(cartProduct.getCount() == cartProduct.getProduct().getStock()) {
+            throw new CustomException(ErrorCode.CANNOT_INCREASE_COUNT);
+        }
+
+        // 수량 증가
+        cartProduct.increaseCount(1);
+        cart.increaseTotalCount(1);
+        cart.increaseTotalPrice(cartProduct.getPrice());
+
+        return ReadCartResponse.createResponse(cart.getCartProducts(), cart);
+    }
+
+    /*
+     * 장바구니에 담긴 상품 수량 감소
+     */
+    @Transactional
+    public ReadCartResponse decreaseCartProductCount(HttpServletRequest request, Long productId) {
+
+        // User 조회
+        User user = this.findUserFromRequest(request);
+
+        // Cart 조회
+        Cart cart = user.getCart();
+
+        CartProduct cartProduct = this.findByProductId(productId, cart.getCartProducts())
+                .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_CART_PRODUCT));
+
+        // 현재 수량이 1개이면 감소 불가
+        if(cartProduct.getCount() == 1) {
+            throw new CustomException(ErrorCode.CANNOT_DECREASE_COUNT);
+        }
+
+        // 수량 감소
+        cartProduct.decreaseCount(1);
+        cart.decreaseTotalCount(1);
+        cart.decreaseTotalPrice(cartProduct.getPrice());
+
+        return ReadCartResponse.createResponse(cart.getCartProducts(), cart);
+    }
+
+
+    // 장바구니에 이미 있는 상품인지 확인
+    public CartProduct findDuplicateCartProduct(Cart cart, Long productId) {
+
+        List<CartProduct> cartProducts = cart.getCartProducts();
+        for(CartProduct cartProduct : cartProducts) {
+            if(cartProduct.getProduct().getId().equals(productId)) {
+                return cartProduct;
+            }
+        }
+        return null;
+    }
+
+    //== private 메서드 ==//
+
+    /*
+     * request를 통해 사용자 조회
+     */
+    private User findUserFromRequest(HttpServletRequest request) {
+
+        String email = jwtTokenUtils.getEmailFromHeader(request);
+        return userRepository.findByEmail(email).orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_USER));
+    }
+
+    /*
+     * 장바구니에 새로운 상품 추가
+     */
+    private void addNewCartProduct(Cart cart, CartProduct cartProduct) {
 
         // Cart에 CartProduct 담기
         cartProductRepository.save(cartProduct);
@@ -37,9 +161,10 @@ public class CartService {
         cart.increaseTotalPrice(cartProduct.getPrice() * cartProduct.getCount());
     }
 
-    // 이미 장바구니에 존재하는 상품의 갯수 수정
-    @Transactional
-    public void updateCartProductCount(Cart cart, CartProduct cartProduct, Integer updateCount) {
+    /*
+     * 장바구니에 존재하는 상품 개수 변경
+     */
+    private void updateCartProductCount(Cart cart, CartProduct cartProduct, Integer updateCount) {
 
         Integer oldCount = cartProduct.getCount();
 
@@ -58,31 +183,16 @@ public class CartService {
         }
     }
 
-    // 장바구니의 CartProduct 수량 1개 늘리기
-    @Transactional
-    public void increaseCartProductCount(Cart cart, CartProduct cartProduct) {
+    /*
+     * CartProduct 리스트에서 인자로 주어진 productId를 갖는 CartProduct 추출
+     */
+    private Optional<CartProduct> findByProductId(Long productId, List<CartProduct> cartProducts) {
 
-        // 현재 수량이 재고 수량이면 증가 불가
-        if(cartProduct.getCount() == cartProduct.getProduct().getStock()) {
-            throw new CustomException(ErrorCode.CANNOT_INCREASE_COUNT);
+        for(CartProduct cartProduct : cartProducts) {
+            if(cartProduct.getProduct().getId().equals(productId)) {
+                return Optional.of(cartProduct);
+            }
         }
-
-        cartProduct.increaseCount(1);
-        cart.increaseTotalCount(1);
-        cart.increaseTotalPrice(cartProduct.getPrice());
-    }
-
-    // 장바구니의 CartProduct 수량 1개 줄이기
-    @Transactional
-    public void decreaseCartProductCount(Cart cart, CartProduct cartProduct) {
-
-        // 현재 수량이 1개이면 감소 불가
-        if(cartProduct.getCount() == 1) {
-            throw new CustomException(ErrorCode.CANNOT_DECREASE_COUNT);
-        }
-
-        cartProduct.decreaseCount(1);
-        cart.decreaseTotalCount(1);
-        cart.decreaseTotalPrice(cartProduct.getPrice());
+        return Optional.empty();
     }
 }

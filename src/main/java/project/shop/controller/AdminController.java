@@ -5,7 +5,6 @@ import org.springframework.web.bind.annotation.*;
 import project.shop.dto.product.CreateProductRequest;
 import project.shop.dto.product.ReadProductResponse;
 import project.shop.dto.product.UpdateProductRequest;
-import project.shop.entity.Product;
 import project.shop.service.ProductService;
 
 @RequiredArgsConstructor
@@ -22,13 +21,8 @@ public class AdminController {
     @PostMapping("/product")
     public ReadProductResponse addProduct(@RequestBody CreateProductRequest dto) {
 
-        // 저장
-        Product product = Product.createProduct(dto.getName(), dto.getPrice(), dto.getStock());
-        Long id = productService.save(product);
-
-        // 조회
-        Product savedProduct = productService.findById(id);
-        return ReadProductResponse.createResponse(savedProduct);
+        // 저장 후 응답
+        return productService.save(dto);
     }
 
     /**
@@ -39,10 +33,6 @@ public class AdminController {
     public ReadProductResponse updateProduct(@PathVariable Long productId, @RequestBody UpdateProductRequest dto) {
 
         // 수정
-        productService.update(productId, dto.getName(), dto.getPrice(), dto.getStock());
-
-        // 조회
-        Product product = productService.findById(productId);
-        return ReadProductResponse.createResponse(product);
+        return productService.update(productId, dto);
     }
 }

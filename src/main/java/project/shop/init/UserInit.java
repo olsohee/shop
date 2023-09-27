@@ -38,19 +38,15 @@ public class UserInit {
         public void init() {
 
             // 관리자
-            Cart cart1 = Cart.createCart();
-            cartService.save(cart1);
             User user1 = User.createUser("관리자", "admin@naver.com",
                     passwordEncoder.encode("1111"), "01012345678",
-                    Authority.ROLE_ADMIN, cart1);
+                    Authority.ROLE_ADMIN);
             userRepository.save(user1);
 
             // 회원
-            Cart cart2 = Cart.createCart();
-            cartService.save(cart2);
             User user2 = User.createUser("관리자", "min@naver.com",
                     passwordEncoder.encode("1111"), "01012345678",
-                    Authority.ROLE_USER, cart2);
+                    Authority.ROLE_USER);
             userRepository.save(user2);
         }
     }

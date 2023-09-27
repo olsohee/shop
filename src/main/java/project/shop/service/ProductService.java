@@ -5,12 +5,14 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import project.shop.dto.product.CreateProductRequest;
+import project.shop.dto.product.ReadProductResponse;
+import project.shop.dto.product.UpdateProductRequest;
 import project.shop.entity.Product;
 import project.shop.exception.CustomException;
 import project.shop.exception.ErrorCode;
 import project.shop.repository.ProductRepository;
 
-import java.util.List;
 
 @Service
 @Transactional(readOnly = true)
@@ -20,29 +22,36 @@ public class ProductService {
     private final ProductRepository productRepository;
 
     @Transactional
-    public Long save(Product product) {
+    public ReadProductResponse save(CreateProductRequest dto) {
 
+        Product product = Product.createProduct(dto.getName(), dto.getPrice(), dto.getStock());
         productRepository.save(product);
-        return product.getId();
+
+        return ReadProductResponse.createResponse(product);
     }
 
-    public Product findById(Long id) {
+    public ReadProductResponse findById(Long id) {
 
-        return productRepository.findById(id).orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_PRODUCT));
+        Product product = productRepository.findById(id).orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_PRODUCT));
+        return ReadProductResponse.createResponse(product);
     }
 
-    public Page<Product> findAll(Pageable pageable) {
+    public Page<ReadProductResponse> findAll(Pageable pageable) {
 
-         return productRepository.findAll(pageable);
+        Page<Product> page = productRepository.findAll(pageable);
+        return page.map(product -> ReadProductResponse.createResponse(product));
     }
 
     @Transactional
-    public void update(Long id, String name, Integer price, Integer stock) {
+    public ReadProductResponse update(Long productId, UpdateProductRequest dto) {
 
         // 조회
-        Product product = findById(id);
+        Product product = productRepository.findById(productId).orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_PRODUCT));
 
         // 수정
-        product.updateProduct(name, price, stock);
+        product.updateProduct(dto.getName(), dto.getPrice(), dto.getStock());
+
+        // 응답
+        return ReadProductResponse.createResponse(product);
     }
 }
