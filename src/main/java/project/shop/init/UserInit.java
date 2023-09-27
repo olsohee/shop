@@ -42,7 +42,7 @@ public class UserInit {
             userRepository.save(user1);
 
             // 회원
-            User user2 = User.createUser("관리자", "min@naver.com",
+            User user2 = User.createUser("min", "min@naver.com",
                     passwordEncoder.encode("1111"), "01012345678",
                     Authority.ROLE_USER);
             userRepository.save(user2);
