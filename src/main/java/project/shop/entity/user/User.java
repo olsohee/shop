@@ -1,9 +1,11 @@
-package project.shop.entity;
+package project.shop.entity.user;
 
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import project.shop.entity.BaseEntity;
+import project.shop.entity.cart.Cart;
 
 import java.util.ArrayList;
 import java.util.List;

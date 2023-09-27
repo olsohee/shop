@@ -1,7 +1,7 @@
 package project.shop.repository;
 
 import org.springframework.data.repository.CrudRepository;
-import project.shop.entity.RefreshToken;
+import project.shop.entity.user.RefreshToken;
 
 import java.util.Optional;
 

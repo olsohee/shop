@@ -1,6 +1,5 @@
 package project.shop.controller;
 
-import io.jsonwebtoken.JwtException;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -9,12 +8,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 import project.shop.dto.user.JoinRequest;
 import project.shop.dto.user.JoinResponse;
-import project.shop.entity.RefreshToken;
 import project.shop.jwt.JwtTokenDto;
 import project.shop.dto.user.LoginRequest;
-import project.shop.entity.User;
 import project.shop.jwt.JwtTokenUtils;
-import project.shop.security.CustomUserDetails;
 import project.shop.service.RefreshTokenService;
 import project.shop.service.UserService;
 

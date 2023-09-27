@@ -1,9 +1,9 @@
 package project.shop.dto.order;
 
 import lombok.Data;
-import project.shop.entity.Order;
-import project.shop.entity.OrderProduct;
-import project.shop.entity.OrderStatus;
+import project.shop.entity.order.Order;
+import project.shop.entity.order.OrderProduct;
+import project.shop.entity.order.OrderStatus;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;

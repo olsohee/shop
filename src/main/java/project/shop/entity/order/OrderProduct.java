@@ -1,11 +1,10 @@
-package project.shop.entity;
+package project.shop.entity.order;
 
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import project.shop.exception.CustomException;
-import project.shop.exception.ErrorCode;
+import project.shop.entity.Product;
 
 @Entity
 @Getter

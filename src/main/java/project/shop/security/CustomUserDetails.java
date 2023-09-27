@@ -6,8 +6,8 @@ import lombok.NoArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
-import project.shop.entity.Authority;
-import project.shop.entity.User;
+import project.shop.entity.user.Authority;
+import project.shop.entity.user.User;
 
 import java.util.ArrayList;
 import java.util.Collection;

@@ -5,14 +5,14 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import project.shop.dto.cart.ReadCartResponse;
-import project.shop.dto.user.JoinRequest;
-import project.shop.dto.user.JoinResponse;
 import project.shop.entity.*;
+import project.shop.entity.cart.Cart;
+import project.shop.entity.cart.CartProduct;
+import project.shop.entity.user.User;
 import project.shop.exception.CustomException;
 import project.shop.exception.ErrorCode;
 import project.shop.jwt.JwtTokenUtils;
 import project.shop.repository.CartProductRepository;
-import project.shop.repository.CartRepository;
 import project.shop.repository.ProductRepository;
 import project.shop.repository.UserRepository;
 

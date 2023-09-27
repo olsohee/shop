@@ -4,14 +4,12 @@ import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
-import project.shop.entity.Authority;
-import project.shop.entity.Cart;
+import project.shop.entity.user.Authority;
 import project.shop.entity.Product;
-import project.shop.entity.User;
+import project.shop.entity.user.User;
 import project.shop.repository.ProductRepository;
 import project.shop.repository.UserRepository;
 import project.shop.service.CartService;
-import project.shop.service.ProductService;
 
 @Component
 @RequiredArgsConstructor

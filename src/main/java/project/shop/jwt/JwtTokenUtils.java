@@ -15,7 +15,7 @@ import java.time.Instant;
 import java.util.Date;
 
 import io.jsonwebtoken.*;
-import project.shop.entity.RefreshToken;
+import project.shop.entity.user.RefreshToken;
 import project.shop.exception.CustomException;
 import project.shop.exception.ErrorCode;
 import project.shop.repository.RefreshTokenRepository;

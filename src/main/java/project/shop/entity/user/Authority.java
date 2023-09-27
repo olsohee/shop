@@ -1,4 +1,4 @@
-package project.shop.entity;
+package project.shop.entity.user;
 
 public enum Authority {
 

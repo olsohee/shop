@@ -1,4 +1,4 @@
-package project.shop.entity;
+package project.shop.entity.cart;
 
 import jakarta.persistence.*;
 import lombok.AccessLevel;

@@ -1,14 +1,11 @@
 package project.shop.dto.cart;
 
 import lombok.Data;
-import project.shop.dto.product.ReadProductResponse;
-import project.shop.entity.Cart;
-import project.shop.entity.CartProduct;
+import project.shop.entity.cart.Cart;
+import project.shop.entity.cart.CartProduct;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 @Data
 public class ReadCartResponse {

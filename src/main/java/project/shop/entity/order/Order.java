@@ -1,10 +1,10 @@
-package project.shop.entity;
+package project.shop.entity.order;
 
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.aspectj.weaver.ast.Or;
+import project.shop.entity.user.User;
 import project.shop.exception.CustomException;
 import project.shop.exception.ErrorCode;
 

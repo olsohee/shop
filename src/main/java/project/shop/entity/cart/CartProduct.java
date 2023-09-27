@@ -1,9 +1,10 @@
-package project.shop.entity;
+package project.shop.entity.cart;
 
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import project.shop.entity.Product;
 
 @Entity
 @Getter
