@@ -100,7 +100,7 @@ public class UserService {
         JwtTokenDto jwtTokenDto = jwtTokenUtils.generateToken(CustomUserDetails.createCustomUserDetails(user));
 
         // DB에 새로운 Refresh Token 저장
-        refreshTokenService.save(new RefreshToken(email, refreshToken));
+        refreshTokenService.save(new RefreshToken(email, jwtTokenDto.getRefreshToken()));
 
         return jwtTokenDto;
     }
