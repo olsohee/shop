@@ -21,7 +21,7 @@ public class Cart {
 
     private Integer totalPrice;
 
-    @OneToMany(mappedBy = "cart")
+    @OneToMany(mappedBy = "cart", cascade = CascadeType.ALL)
     List<CartProduct> cartProducts = new ArrayList<>();
 
     //== 연관관계 메서드 ==//

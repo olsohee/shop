@@ -12,7 +12,6 @@ import project.shop.entity.user.User;
 import project.shop.exception.CustomException;
 import project.shop.exception.ErrorCode;
 import project.shop.jwt.JwtTokenUtils;
-import project.shop.repository.CartProductRepository;
 import project.shop.repository.ProductRepository;
 import project.shop.repository.UserRepository;
 
@@ -25,7 +24,6 @@ import java.util.Optional;
 public class CartService {
 
     private final JwtTokenUtils jwtTokenUtils;
-    private final CartProductRepository cartProductRepository;
     private final ProductRepository productRepository;
     private final UserRepository userRepository;
 
@@ -153,7 +151,6 @@ public class CartService {
     private void addNewCartProduct(Cart cart, CartProduct cartProduct) {
 
         // Cart에 CartProduct 담기
-        cartProductRepository.save(cartProduct);
         cart.addCartProduct(cartProduct);
 
         // Cart의 totalPrice, totalCount 수정
