@@ -55,4 +55,10 @@ public class Order {
         }
         return order;
     }
+
+    //== 비즈니스 메서드 ==//
+    public void cancel() {
+
+        this.orderStatus = OrderStatus.CANCEL;
+    }
 }

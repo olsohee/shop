@@ -22,7 +22,7 @@ public class OrderResponse {
     private LocalDateTime orderDate;
     private List<OrderProductResponse> orderProducts = new ArrayList<>();
 
-    public static OrderResponse createResponse(Order order, List<OrderProduct> orderProducts) {
+    public static OrderResponse createResponse(Order order) {
 
         OrderResponse response = new OrderResponse();
         response.orderId = order.getId();
@@ -30,7 +30,8 @@ public class OrderResponse {
         response.totalPrice = order.getTotalPrice();
         response.orderStatus = order.getOrderStatus();
         response.orderDate = order.getOrderDate();
-        for (OrderProduct orderProduct : orderProducts) {
+
+        for (OrderProduct orderProduct : order.getOrderProducts()) {
             response.orderProducts.add(OrderProductResponse.createResponse(orderProduct));
         }
         return response;

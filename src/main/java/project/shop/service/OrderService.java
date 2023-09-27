@@ -52,7 +52,7 @@ public class OrderService {
         orderRepository.save(order);
 
         // 응답
-        return OrderResponse.createResponse(order, orderProducts);
+        return OrderResponse.createResponse(order);
     }
 
     public OrderListResponse findOrderList(HttpServletRequest request) {
@@ -70,7 +70,22 @@ public class OrderService {
             throw new CustomException(ErrorCode.UNAUTHORIZED);
         }
 
-        return OrderResponse.createResponse(order, order.getOrderProducts());
+        return OrderResponse.createResponse(order);
+    }
+
+    @Transactional
+    public OrderResponse cancel(HttpServletRequest request, Long orderId) {
+
+        Order order = orderRepository.findById(orderId).orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_ORDER));
+        User user = this.findUserFromRequest(request);
+        if(!order.getUser().equals(user)) {
+            throw new CustomException(ErrorCode.UNAUTHORIZED);
+        }
+
+        // 주문 취소
+        order.cancel();
+
+        return OrderResponse.createResponse(order);
     }
 
     //== private 메서드 ==//

@@ -49,5 +49,10 @@ public class OrderController {
      * [POST] /orders/{orderId}/cancel
      * 주문 취소
      */
+    @PutMapping("/orders/{orderId}/cancel")
+    public OrderResponse cancelOrder(HttpServletRequest request,
+                                   @PathVariable Long orderId) {
 
+        return orderService.cancel(request, orderId);
+    }
 }
