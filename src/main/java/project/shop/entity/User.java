@@ -35,14 +35,14 @@ public class User extends BaseEntity {
     @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private Cart cart;
 
-    // 연관관계 편의 메서드
+    //== 연관관계 메서드 ==//
     public void addAddress(Address address) {
 
         this.addresses.add(address);
         address.setUser(this);
     }
 
-    // 생성 메서드
+    //== 생성 메서드 ==//
     public static User createUser(String username, String email,
                                   String password, String phoneNumber,
                                   Authority authority) {

@@ -1,10 +1,13 @@
 package project.shop.entity;
 
 import jakarta.persistence.*;
+import lombok.AccessLevel;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 @Entity
 @Getter
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class CartProduct {
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -23,7 +26,7 @@ public class CartProduct {
     @JoinColumn(name = "product_id")
     Product product;
 
-    // 생성 메서드
+    //== 생성 메서드 ==//
     public static CartProduct createCartProduct(Product product, Integer price, Integer count) {
 
         CartProduct cartProduct = new CartProduct();
@@ -33,7 +36,7 @@ public class CartProduct {
         return cartProduct;
     }
 
-    // 수정 메서드
+    //== 비즈니스 메서드 ==//
     public void setCart(Cart cart) {
         this.cart = cart;
     }

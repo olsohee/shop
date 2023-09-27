@@ -1,7 +1,9 @@
 package project.shop.entity;
 
 import jakarta.persistence.*;
+import lombok.AccessLevel;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import org.aspectj.weaver.ast.Or;
 
 import java.time.LocalDateTime;
@@ -11,6 +13,7 @@ import java.util.List;
 @Entity
 @Getter
 @Table(name = "orders")
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Order {
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -32,14 +35,14 @@ public class Order {
     @OneToMany(mappedBy = "order", cascade = CascadeType.ALL)
     private List<OrderProduct> orderProducts = new ArrayList<>();
 
-    // 연관관계 편의 메서드
+    //== 연관관계 메서드 ==//
     public void addOrderProduct(OrderProduct orderProduct) {
 
         orderProducts.add(orderProduct);
         orderProduct.setOrder(this);
     }
 
-    // 생성 메서드
+    //== 생성 메서드 ==//
     public static Order createOrder(User user, List<OrderProduct> orderProducts) {
 
         Order order = new Order();

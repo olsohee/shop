@@ -1,10 +1,13 @@
 package project.shop.entity;
 
 import jakarta.persistence.*;
+import lombok.AccessLevel;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 @Entity
 @Getter
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class OrderProduct {
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -22,7 +25,7 @@ public class OrderProduct {
     @ManyToOne(fetch = FetchType.LAZY)
     Product product;
 
-    // 생성 메서드
+    //== 생성 메서드 ==//
     public static OrderProduct createOrderProduct(Product product, Integer price, Integer count) {
 
         OrderProduct orderProduct = new OrderProduct();
@@ -32,7 +35,7 @@ public class OrderProduct {
         return orderProduct;
     }
 
-    // 수정 메서드
+    //== 비즈니스 메서드 ==//
     public void setOrder(Order order) {
         this.order = order;
     }

@@ -7,6 +7,7 @@ import java.time.LocalDateTime;
 
 @Entity
 @Getter
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Product extends BaseEntity{
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -19,7 +20,7 @@ public class Product extends BaseEntity{
 
     private Integer stock;
 
-    // 생성 메서드
+    //== 생성 메서드 ==//
     public static Product createProduct(String name, Integer price, Integer stock) {
 
         Product product = new Product();
@@ -29,7 +30,7 @@ public class Product extends BaseEntity{
         return product;
     }
 
-    // 수정 메서드
+    //== 비즈니스 메서드 ==//
     public void updateProduct(String name, Integer price, Integer stock) {
 
         this.name = name;

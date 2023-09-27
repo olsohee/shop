@@ -24,7 +24,14 @@ public class Cart {
     @OneToMany(mappedBy = "cart")
     List<CartProduct> cartProducts = new ArrayList<>();
 
-    // 생성 메서드
+    //== 연관관계 메서드 ==//
+    public void addCartProduct(CartProduct cartProduct) {
+
+        this.cartProducts.add(cartProduct);
+        cartProduct.setCart(this);
+    }
+
+    //== 생성 메서드 ==//
     public static Cart createCart() {
 
         Cart cart = new Cart();
@@ -33,14 +40,8 @@ public class Cart {
         return cart;
     }
 
-    // 연관관계 편의 메서드
-    public void addCartProduct(CartProduct cartProduct) {
 
-        this.cartProducts.add(cartProduct);
-        cartProduct.setCart(this);
-    }
-
-    // 수정 메서드
+    //== 비즈니스 메서드 ==//
     public void increaseTotalCount(Integer increaseCount) {
 
         this.totalCount += increaseCount;
