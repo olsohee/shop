@@ -4,6 +4,9 @@ import lombok.Data;
 
 import java.util.List;
 
+/*
+ * 주문 요청
+ */
 @Data
 public class OrderRequest {
 

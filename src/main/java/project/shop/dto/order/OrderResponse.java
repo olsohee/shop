@@ -9,6 +9,9 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
+/*
+ * 주문 내역 단일 조회
+ */
 @Data
 public class OrderResponse {
 
@@ -33,6 +36,9 @@ public class OrderResponse {
         return response;
     }
 
+    /*
+     * 개별 주문 상품
+     */
     @Data
     public static class OrderProductResponse {
 

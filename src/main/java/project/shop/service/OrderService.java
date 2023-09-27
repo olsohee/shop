@@ -14,6 +14,7 @@ import project.shop.repository.OrderRepository;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Transactional(readOnly = true)
 @Service
@@ -46,5 +47,10 @@ public class OrderService {
         orderRepository.save(order);
 
         return order.getId();
+    }
+
+    public List<Order> findListByUser(User user) {
+
+        return orderRepository.findByUser(user);
     }
 }
