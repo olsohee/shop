@@ -4,28 +4,16 @@ import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 import project.shop.dto.cart.ReadCartResponse;
-import project.shop.entity.Cart;
-import project.shop.entity.CartProduct;
-import project.shop.entity.Product;
-import project.shop.entity.User;
-import project.shop.exception.CustomException;
-import project.shop.exception.ErrorCode;
 import project.shop.jwt.JwtTokenUtils;
 import project.shop.service.CartService;
 import project.shop.service.ProductService;
 import project.shop.service.UserService;
-
-import java.util.List;
-import java.util.Optional;
 
 @RestController
 @RequiredArgsConstructor
 public class CartController {
 
     private final CartService cartService;
-    private final JwtTokenUtils jwtTokenUtils;
-    private final UserService userService;
-    private final ProductService productService;
 
     /**
      * [POST] /products/{productId}/cart?count=
@@ -69,9 +57,4 @@ public class CartController {
 
         return cartService.decreaseCartProductCount(request, productId);
     }
-
-
-
-
-
 }
