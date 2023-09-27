@@ -6,22 +6,18 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
-import project.shop.dto.user.JoinRequest;
-import project.shop.dto.user.JoinResponse;
+import project.shop.dto.login.JoinRequest;
+import project.shop.dto.login.JoinResponse;
 import project.shop.jwt.JwtTokenDto;
-import project.shop.dto.user.LoginRequest;
-import project.shop.jwt.JwtTokenUtils;
-import project.shop.service.RefreshTokenService;
+import project.shop.dto.login.LoginRequest;
 import project.shop.service.UserService;
 
 @RestController
 @RequiredArgsConstructor
 @Slf4j
-public class UserController {
+public class LoginController {
 
     private final UserService userService;
-    private final JwtTokenUtils jwtTokenUtils;
-    private final RefreshTokenService refreshTokenService;
 
     /**
      * [POST] /join

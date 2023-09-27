@@ -1,4 +1,4 @@
-package project.shop.dto.user;
+package project.shop.dto.login;
 
 import lombok.Data;
 
