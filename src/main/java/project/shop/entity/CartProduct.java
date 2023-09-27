@@ -16,9 +16,11 @@ public class CartProduct {
     private Integer count;
 
     @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "cart_id")
     Cart cart;
 
     @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "product_id")
     Product product;
 
     // 생성 메서드

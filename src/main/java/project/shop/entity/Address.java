@@ -18,6 +18,7 @@ public class Address {
     private String zipcode;
 
     @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id")
     User user;
 
     public void setUser(User user) {
