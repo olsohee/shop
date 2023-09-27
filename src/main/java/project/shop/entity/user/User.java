@@ -31,7 +31,7 @@ public class User extends BaseEntity {
     @Enumerated(value = EnumType.STRING)
     private Authority authority;
 
-    @OneToMany(mappedBy = "user")
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private List<Address> addresses = new ArrayList<>();
 
     @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
