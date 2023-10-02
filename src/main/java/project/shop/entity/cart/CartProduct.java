@@ -4,7 +4,7 @@ import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import project.shop.entity.Product;
+import project.shop.entity.product.Product;
 
 @Entity
 @Getter

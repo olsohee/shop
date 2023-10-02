@@ -8,7 +8,8 @@ import org.springframework.transaction.annotation.Transactional;
 import project.shop.dto.product.CreateProductRequest;
 import project.shop.dto.product.ReadProductResponse;
 import project.shop.dto.product.UpdateProductRequest;
-import project.shop.entity.Product;
+import project.shop.entity.product.Product;
+import project.shop.entity.product.ProductCategory;
 import project.shop.exception.CustomException;
 import project.shop.exception.ErrorCode;
 import project.shop.repository.ProductRepository;
@@ -24,7 +25,8 @@ public class ProductService {
     @Transactional
     public ReadProductResponse save(CreateProductRequest dto) {
 
-        Product product = Product.createProduct(dto.getName(), dto.getPrice(), dto.getStock());
+        Product product = Product.createProduct(dto.getName(), dto.getPrice(),
+                dto.getStock(), ProductCategory.valueOf(dto.getProductCategory()));
         productRepository.save(product);
 
         return ReadProductResponse.createResponse(product);

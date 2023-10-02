@@ -4,8 +4,9 @@ import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
+import project.shop.entity.product.ProductCategory;
 import project.shop.entity.user.Authority;
-import project.shop.entity.Product;
+import project.shop.entity.product.Product;
 import project.shop.entity.user.User;
 import project.shop.repository.ProductRepository;
 import project.shop.repository.UserRepository;
@@ -13,7 +14,7 @@ import project.shop.service.CartService;
 
 @Component
 @RequiredArgsConstructor
-public class UserInit {
+public class Init {
 
     private final InitUser initUser;
     private final InitProduct initProduct;
@@ -57,13 +58,13 @@ public class UserInit {
 
         public void init() {
 
-            Product product1 = Product.createProduct("티셔츠", 80000, 15);
+            Product product1 = Product.createProduct("삼겹살", 15000, 15, ProductCategory.PORK);
             productRepository.save(product1);
 
-            Product product2 = Product.createProduct("트랙팬츠", 150000, 10);
+            Product product2 = Product.createProduct("생과일 자몽 주스", 8000, 10, ProductCategory.JUICE);
             productRepository.save(product2);
 
-            Product product3 = Product.createProduct("볼캡", 45000, 25);
+            Product product3 = Product.createProduct("갈치", 9900, 25, ProductCategory.FISH);
             productRepository.save(product3);
         }
     }

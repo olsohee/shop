@@ -9,7 +9,7 @@ import project.shop.dto.order.OrderRequest;
 import project.shop.dto.order.OrderResponse;
 import project.shop.entity.order.Order;
 import project.shop.entity.order.OrderProduct;
-import project.shop.entity.Product;
+import project.shop.entity.product.Product;
 import project.shop.entity.user.User;
 import project.shop.exception.CustomException;
 import project.shop.exception.ErrorCode;
