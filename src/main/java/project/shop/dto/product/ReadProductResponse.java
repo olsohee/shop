@@ -2,7 +2,6 @@ package project.shop.dto.product;
 
 import lombok.Data;
 import project.shop.entity.product.Product;
-import project.shop.entity.product.ProductCategory;
 
 @Data
 public class ReadProductResponse {

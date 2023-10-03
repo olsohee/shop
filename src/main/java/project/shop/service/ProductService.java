@@ -14,6 +14,9 @@ import project.shop.exception.CustomException;
 import project.shop.exception.ErrorCode;
 import project.shop.repository.ProductRepository;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 
 @Service
 @Transactional(readOnly = true)
@@ -55,5 +58,11 @@ public class ProductService {
 
         // 응답
         return ReadProductResponse.createResponse(product);
+    }
+
+    public Page<ReadProductResponse> findByCategory(String category, Pageable pageable) {
+
+        Page<Product> page = productRepository.findByProductCategory(ProductCategory.valueOf(category.toUpperCase()), pageable);
+        return page.map(product -> ReadProductResponse.createResponse(product));
     }
 }

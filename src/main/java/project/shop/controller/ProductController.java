@@ -9,7 +9,10 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 import project.shop.dto.product.ReadProductResponse;
+import project.shop.entity.product.Product;
 import project.shop.service.ProductService;
+
+import java.util.List;
 
 
 @RestController
@@ -36,5 +39,16 @@ public class ProductController {
     public ReadProductResponse findOne(@PathVariable Long productId) {
 
         return productService.findById(productId);
+    }
+
+    /**
+     * [GET] /categories/{category}
+     * 상품 카테고리별 조회
+     */
+    @GetMapping("/categories/{category}")
+    public Page<ReadProductResponse> findByCategory(@PathVariable String category,
+                                                    @PageableDefault(size = 5, sort = "createdDate", direction = Sort.Direction.DESC) Pageable pageable) {
+
+        return productService.findByCategory(category, pageable);
     }
 }
