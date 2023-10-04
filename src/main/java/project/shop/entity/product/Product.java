@@ -47,11 +47,12 @@ public class Product extends BaseEntity {
     }
 
     //== 비즈니스 메서드 ==//
-    public void updateProduct(String name, Integer price, Integer stock) {
+    public void updateProduct(String name, Integer price, Integer stock, ProductCategory productCategory) {
 
         this.name = name;
         this.price = price;
         this.stock = stock;
+        this.productCategory = productCategory;
     }
 
     public void updateProductImages(List<ProductImage> newProductImages) {

@@ -5,7 +5,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import project.shop.dto.mypage.AddressListResponse;
-import project.shop.dto.mypage.CreateAddressRequest;
+import project.shop.dto.mypage.AddressRequest;
 import project.shop.entity.user.Address;
 import project.shop.entity.user.User;
 import project.shop.exception.CustomException;
@@ -24,7 +24,7 @@ public class MypageService {
     private final UserRepository userRepository;
 
     @Transactional
-    public AddressListResponse create(HttpServletRequest request, CreateAddressRequest dto) {
+    public AddressListResponse create(HttpServletRequest request, AddressRequest dto) {
 
         // Address
         Address address = Address.createAddress(dto.getName(), dto.getCity(), dto.getStreet(), dto.getZipcode());

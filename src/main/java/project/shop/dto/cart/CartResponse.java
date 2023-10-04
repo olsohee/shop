@@ -8,15 +8,15 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Data
-public class ReadCartResponse {
+public class CartResponse {
 
     private List<CartProductResponse> cartProducts;
     private Integer totalCount;
     private Integer totalPrice;
 
-    public static ReadCartResponse createResponse(List<CartProduct> cartProducts, Cart cart) {
+    public static CartResponse createResponse(List<CartProduct> cartProducts, Cart cart) {
 
-        ReadCartResponse response = new ReadCartResponse();
+        CartResponse response = new CartResponse();
         response.cartProducts =  cartProducts.stream().map(cartProduct -> CartProductResponse.createResponse(cartProduct))
                 .collect(Collectors.toList());
         response.totalPrice = cart.getTotalPrice();

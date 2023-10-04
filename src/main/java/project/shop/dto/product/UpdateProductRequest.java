@@ -8,4 +8,5 @@ public class UpdateProductRequest {
     private String name;
     private Integer price;
     private Integer stock;
+    private String productCategory;
 }

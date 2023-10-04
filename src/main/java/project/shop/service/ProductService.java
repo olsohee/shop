@@ -63,7 +63,8 @@ public class ProductService {
         Product product = productRepository.findById(productId).orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_PRODUCT));
 
         // Product 수정
-        product.updateProduct(dto.getName(), dto.getPrice(), dto.getStock());
+        product.updateProduct(dto.getName(), dto.getPrice(),
+                dto.getStock(), ProductCategory.valueOf(dto.getProductCategory()));
 
         // 디렉터리에 파일 저장 후 ProductImage 생성
         List<ProductImage> newProductImages = createProductImages(multipartFiles);

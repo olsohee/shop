@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 import project.shop.dto.mypage.AddressListResponse;
-import project.shop.dto.mypage.CreateAddressRequest;
+import project.shop.dto.mypage.AddressRequest;
 import project.shop.service.MypageService;
 
 @RestController
@@ -22,7 +22,7 @@ public class MypageController {
      */
     @PostMapping("/mypage/edit/address/create")
     public AddressListResponse editAddress(HttpServletRequest request,
-                                           @RequestBody CreateAddressRequest dto) {
+                                           @RequestBody AddressRequest dto) {
 
         return mypageService.create(request, dto);
     }

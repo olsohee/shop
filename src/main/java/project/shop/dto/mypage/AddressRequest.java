@@ -3,7 +3,7 @@ package project.shop.dto.mypage;
 import lombok.Data;
 
 @Data
-public class CreateAddressRequest {
+public class AddressRequest {
 
     private String name;
     private String city;

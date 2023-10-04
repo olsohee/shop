@@ -4,7 +4,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import project.shop.dto.cart.ReadCartResponse;
+import project.shop.dto.cart.CartResponse;
 import project.shop.entity.cart.Cart;
 import project.shop.entity.cart.CartProduct;
 import project.shop.entity.product.Product;
@@ -31,7 +31,7 @@ public class CartService {
      * 해당 상품이 장바구니에 이미 있는 상품인지, 아닌지를 판단하여 장바구니에 상품 추가
      */
     @Transactional
-    public ReadCartResponse addCartProduct(HttpServletRequest request, Long productId, Integer count) {
+    public CartResponse addCartProduct(HttpServletRequest request, Long productId, Integer count) {
 
         // User
         User user = this.findUserFromRequest(request);
@@ -52,24 +52,24 @@ public class CartService {
             this.addNewCartProduct(cart, cartProduct);
         }
 
-        return ReadCartResponse.createResponse(cart.getCartProducts(), cart);
+        return CartResponse.createResponse(cart.getCartProducts(), cart);
     }
 
     /*
      * 사용자의 Cart 조회
      */
-    public ReadCartResponse findCart(HttpServletRequest request) {
+    public CartResponse findCart(HttpServletRequest request) {
 
         User user = this.findUserFromRequest(request);
         Cart cart = user.getCart();
-        return ReadCartResponse.createResponse(cart.getCartProducts(), cart);
+        return CartResponse.createResponse(cart.getCartProducts(), cart);
     }
 
     /*
      * 장바구니에 담긴 상품 수량 증가
      */
     @Transactional
-    public ReadCartResponse increaseCartProductCount(HttpServletRequest request, Long productId) {
+    public CartResponse increaseCartProductCount(HttpServletRequest request, Long productId) {
 
         // User 조회
         User user = this.findUserFromRequest(request);
@@ -90,14 +90,14 @@ public class CartService {
         cart.increaseTotalCount(1);
         cart.increaseTotalPrice(cartProduct.getPrice());
 
-        return ReadCartResponse.createResponse(cart.getCartProducts(), cart);
+        return CartResponse.createResponse(cart.getCartProducts(), cart);
     }
 
     /*
      * 장바구니에 담긴 상품 수량 감소
      */
     @Transactional
-    public ReadCartResponse decreaseCartProductCount(HttpServletRequest request, Long productId) {
+    public CartResponse decreaseCartProductCount(HttpServletRequest request, Long productId) {
 
         // User 조회
         User user = this.findUserFromRequest(request);
@@ -118,7 +118,7 @@ public class CartService {
         cart.decreaseTotalCount(1);
         cart.decreaseTotalPrice(cartProduct.getPrice());
 
-        return ReadCartResponse.createResponse(cart.getCartProducts(), cart);
+        return CartResponse.createResponse(cart.getCartProducts(), cart);
     }
 
 
