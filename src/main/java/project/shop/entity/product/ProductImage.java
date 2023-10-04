@@ -15,19 +15,19 @@ public class ProductImage {
     @Column(name = "product_image_id")
     private Long id;
 
-    private String uploadFileName;
+    private String uploadFilename;
 
-    private String storeFileName;
+    private String storeFilename;
 
     @ManyToOne
     @JoinColumn(name = "product_id")
     Product product;
 
-    public static ProductImage createProductImage(String uploadFileName, String storeFileName) {
+    public static ProductImage createProductImage(String uploadFilename, String storeFilename) {
 
         ProductImage productImage = new ProductImage();
-        productImage.uploadFileName = uploadFileName;
-        productImage.storeFileName = storeFileName;
+        productImage.uploadFilename = uploadFilename;
+        productImage.storeFilename = storeFilename;
         return productImage;
     }
 }
