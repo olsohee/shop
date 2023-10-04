@@ -69,5 +69,9 @@ public class Order {
         }
 
         this.orderStatus = OrderStatus.CANCEL;
+
+        for(OrderProduct orderProduct : this.getOrderProducts()) {
+            orderProduct.cancel();
+        }
     }
 }

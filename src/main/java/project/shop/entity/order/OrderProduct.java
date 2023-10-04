@@ -43,4 +43,9 @@ public class OrderProduct {
 
         this.order = order;
     }
+
+    public void cancel() {
+
+        this.getProduct().addStock(count);
+    }
 }
