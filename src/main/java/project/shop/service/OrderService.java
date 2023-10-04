@@ -41,7 +41,7 @@ public class OrderService {
         List<OrderProduct> orderProducts = new ArrayList<>();
         for (OrderRequest.OrderProductRequest orderProductDto : dto.getOrderProducts()) {
             Product product = productRepository.findById(orderProductDto.getProductId()).orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_PRODUCT));
-           OrderProduct orderProduct = OrderProduct.createOrderProduct(product, product.getPrice(), orderProductDto.getCount());
+            OrderProduct orderProduct = OrderProduct.createOrderProduct(product, product.getPrice(), orderProductDto.getCount());
             orderProducts.add(orderProduct);
         }
 

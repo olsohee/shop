@@ -18,6 +18,7 @@ public enum ErrorCode {
     CANNOT_DECREASE_COUNT(HttpStatus.BAD_REQUEST, "최소 수량은 1개입니다"),
     CANNOT_INCREASE_COUNT(HttpStatus.BAD_REQUEST, "해당 상품의 최대 주문 가능 수량입니다"),
     CANNOT_ORDER_CANCEL(HttpStatus.BAD_REQUEST, "배송중이거나 배송이 완료된 상품은 취소가 불가능합니다"),
+    OUT_OF_STOCK(HttpStatus.BAD_REQUEST, "재고가 부족하여 주문이 불가합니다"),
 
     UNAUTHORIZED(HttpStatus.UNAUTHORIZED, "접근 권한이 없습니다")
     ;

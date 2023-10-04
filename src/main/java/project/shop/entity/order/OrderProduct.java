@@ -33,6 +33,8 @@ public class OrderProduct {
         orderProduct.price = price;
         orderProduct.count = count;
         orderProduct.product = product;
+
+        product.reduceStock(count);
         return orderProduct;
     }
 

@@ -3,7 +3,10 @@ package project.shop.entity.product;
 import jakarta.persistence.*;
 import lombok.*;
 import project.shop.entity.BaseEntity;
+import project.shop.exception.CustomException;
+import project.shop.exception.ErrorCode;
 
+import javax.transaction.xa.XAException;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -64,5 +67,20 @@ public class Product extends BaseEntity {
         for (ProductImage newProductImage : newProductImages) {
             productImages.add(newProductImage);
         }
+    }
+
+    public void reduceStock(int stock) {
+
+        int restStock = this.stock - stock;
+        if(restStock < 0) {
+            throw new CustomException(ErrorCode.OUT_OF_STOCK);
+        }
+
+        this.stock = restStock;
+    }
+
+    public void addStock(int stock) {
+
+        this.stock += stock;
     }
 }
