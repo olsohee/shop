@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import project.shop.dto.product.AdminProductResponse;
 import project.shop.dto.product.ProductRequest;
 import project.shop.dto.product.ProductResponse;
 import project.shop.dto.product.UpdateProductRequest;
@@ -25,8 +26,8 @@ public class AdminController {
      * 상품 등록
      */
     @PostMapping("/product")
-    public ProductResponse addProduct(@RequestPart ProductRequest dto,
-                                      @RequestPart List<MultipartFile> files) throws IOException {
+    public AdminProductResponse addProduct(@RequestPart ProductRequest dto,
+                                           @RequestPart List<MultipartFile> files) throws IOException {
 
         // 저장 후 응답
         return productService.save(dto, files);
@@ -37,7 +38,7 @@ public class AdminController {
      * 상품 수정
      */
     @PutMapping("/products/{productId}")
-    public ProductResponse updateProduct(@PathVariable Long productId,
+    public AdminProductResponse updateProduct(@PathVariable Long productId,
                                              @RequestPart UpdateProductRequest dto,
                                              @RequestPart List<MultipartFile> files) throws IOException {
 
