@@ -8,11 +8,8 @@ import org.springframework.data.web.PageableDefault;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
-import project.shop.dto.product.ReadProductResponse;
-import project.shop.entity.product.Product;
+import project.shop.dto.product.ProductListResponse;
 import project.shop.service.ProductService;
-
-import java.util.List;
 
 
 @RestController
@@ -26,7 +23,7 @@ public class ProductController {
      * 상품 목록 조회
      */
     @GetMapping("/products")
-    public Page<ReadProductResponse> findAll(@PageableDefault(size = 5, sort = "createdDate", direction = Sort.Direction.DESC) Pageable pageable) {
+    public Page<ProductListResponse> findAll(@PageableDefault(size = 5, sort = "createdDate", direction = Sort.Direction.DESC) Pageable pageable) {
 
         return productService.findAll(pageable);
     }
@@ -36,7 +33,7 @@ public class ProductController {
      * 상품 단일 조회
      */
     @GetMapping("/products/{productId}")
-    public ReadProductResponse findOne(@PathVariable Long productId) {
+    public ProductListResponse findOne(@PathVariable Long productId) {
 
         return productService.findById(productId);
     }
@@ -46,7 +43,7 @@ public class ProductController {
      * 상품 카테고리별 조회
      */
     @GetMapping("/categories/{category}")
-    public Page<ReadProductResponse> findByCategory(@PathVariable String category,
+    public Page<ProductListResponse> findByCategory(@PathVariable String category,
                                                     @PageableDefault(size = 5, sort = "createdDate", direction = Sort.Direction.DESC) Pageable pageable) {
 
         return productService.findByCategory(category, pageable);
