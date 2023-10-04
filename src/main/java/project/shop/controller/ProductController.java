@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 import project.shop.dto.product.ProductListResponse;
+import project.shop.dto.product.ProductResponse;
 import project.shop.service.ProductService;
 
 
@@ -33,7 +34,7 @@ public class ProductController {
      * 상품 단일 조회
      */
     @GetMapping("/products/{productId}")
-    public ProductListResponse findOne(@PathVariable Long productId) {
+    public ProductResponse findOne(@PathVariable Long productId) {
 
         return productService.findById(productId);
     }

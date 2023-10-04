@@ -4,15 +4,15 @@ import lombok.Data;
 import project.shop.entity.product.Product;
 
 @Data
-public class ReadProductResponse {
+public class ProductListResponse {
 
     private String name;
     private String productCategory;
     private Integer price;
 
-    public static ReadProductResponse createResponse(Product product) {
+    public static ProductListResponse createResponse(Product product) {
 
-        ReadProductResponse response = new ReadProductResponse();
+        ProductListResponse response = new ProductListResponse();
         response.name = product.getName();
         response.productCategory = product.getProductCategory().getTitle();
         response.price = product.getPrice();

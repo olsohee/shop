@@ -9,13 +9,13 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 import project.shop.dto.product.ProductRequest;
 import project.shop.dto.product.ProductListResponse;
+import project.shop.dto.product.ProductResponse;
 import project.shop.dto.product.UpdateProductRequest;
 import project.shop.entity.product.Product;
 import project.shop.entity.product.ProductCategory;
 import project.shop.entity.product.ProductImage;
 import project.shop.exception.CustomException;
 import project.shop.exception.ErrorCode;
-import project.shop.repository.ProductImageRepository;
 import project.shop.repository.ProductRepository;
 
 import java.io.File;
@@ -31,13 +31,12 @@ import java.util.UUID;
 public class ProductService {
 
     private final ProductRepository productRepository;
-    private final ProductImageRepository productImageRepository;
 
     @Value("${file.dir}")
     private String fileDir;
 
     @Transactional
-    public ProductListResponse save(ProductRequest dto, List<MultipartFile> multipartFiles) throws IOException {
+    public ProductResponse save(ProductRequest dto, List<MultipartFile> multipartFiles) throws IOException {
 
         // Product 생성
         Product product = Product.createProduct(dto.getName(), dto.getPrice(),
@@ -54,46 +53,32 @@ public class ProductService {
         // DB에 Product 저장
         productRepository.save(product);
 
-        // DB에 ProductImage 저장
-        for (ProductImage productImage : productImages) {
-            productImageRepository.save(productImage);
-        }
-
-        return ProductListResponse.createResponse(product);
+        return ProductResponse.createResponse(product);
     }
 
     @Transactional
-    public ProductListResponse update(Long productId, UpdateProductRequest dto, List<MultipartFile> multipartFiles) throws IOException {
+    public ProductResponse update(Long productId, UpdateProductRequest dto, List<MultipartFile> multipartFiles) throws IOException {
 
-        // 조회
+        // Product 조회
         Product product = productRepository.findById(productId).orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_PRODUCT));
 
         // Product 수정
         product.updateProduct(dto.getName(), dto.getPrice(), dto.getStock());
 
-        // 새로운 List<ProductImage> 생성 후 연관관계
+        // 디렉터리에 파일 저장 후 ProductImage 생성
         List<ProductImage> newProductImages = createProductImages(multipartFiles);
+
+        // Product - ProductImage 연관관계
         product.updateProductImages(newProductImages);
 
-        // DB에서 Product의 기존 ProductImage 삭제
-        List<ProductImage> productImages = product.getProductImages();
-        for (ProductImage productImage : productImages) {
-            productImageRepository.delete(productImage);
-        }
-
-        // DB에 새로운 ProductImage 저장
-        for (ProductImage newProductImage : newProductImages) {
-            productImageRepository.save(newProductImage);
-        }
-
         // 응답
-        return ProductListResponse.createResponse(product);
+        return ProductResponse.createResponse(product);
     }
 
-    public ProductListResponse findById(Long id) {
+    public ProductResponse findById(Long id) {
 
         Product product = productRepository.findById(id).orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_PRODUCT));
-        return ProductListResponse.createResponse(product);
+        return ProductResponse.createResponse(product);
     }
 
     public Page<ProductListResponse> findAll(Pageable pageable) {

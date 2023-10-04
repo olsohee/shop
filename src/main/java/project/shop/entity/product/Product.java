@@ -5,6 +5,7 @@ import lombok.*;
 import project.shop.entity.BaseEntity;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 @Entity
@@ -24,7 +25,7 @@ public class Product extends BaseEntity {
 
     private ProductCategory productCategory;
 
-    @OneToMany(mappedBy = "product")
+    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true)
     List<ProductImage> productImages = new ArrayList<>();
 
     //== 연관관계 메서드 ==//
@@ -53,9 +54,14 @@ public class Product extends BaseEntity {
         this.stock = stock;
     }
 
-    public void updateProductImages(List<ProductImage> productImages) {
+    public void updateProductImages(List<ProductImage> newProductImages) {
 
-        // 기존 List<ProductImage> 와의 관계가 끊기고 새로운 List<ProductImage>가 연결됨
-        this.productImages = productImages;
+        // 기존 리스트 clear
+        this.productImages.clear();
+
+        // 기존 리스트에 새로운 ProductImage들을 추가
+        for (ProductImage newProductImage : newProductImages) {
+            productImages.add(newProductImage);
+        }
     }
 }
