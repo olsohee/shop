@@ -1,4 +1,4 @@
-package project.shop.oAuth;
+package project.shop.oauth;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -14,6 +14,7 @@ import project.shop.entity.user.User;
 import project.shop.repository.UserRepository;
 
 import java.util.Collections;
+import java.util.Map;
 
 @Service
 @RequiredArgsConstructor
@@ -30,19 +31,23 @@ public class OAuth2UserService extends DefaultOAuth2UserService {
         // 사용자 정보 조회
         OAuth2User oAuth2User = super.loadUser(userRequest);
 
-        // OAuth 서비스 id(application.yml에 등록한 Provider id)
+        // registrationId
         String registrationId = userRequest.getClientRegistration().getRegistrationId();
+        // userNameAttributeName: OAuth 로그인 시 키(PK)가 되는 값
+        String userNameAttributeName = userRequest.getClientRegistration()
+                .getProviderDetails().getUserInfoEndpoint().getUserNameAttributeName();
+        // attributes: 사용자 정보를 담은 Json 객체
+        Map<String, Object> attributes = oAuth2User.getAttributes();
 
-        // 사용자 정보를 담는 OAuthAttributes 생성
-        OAuthAttributes attributes = OAuthAttributes.of(registrationId, oAuth2User.getAttributes());
+        // 정제된 사용자 정보를 담는 OAuthAttributes 생성
+        OAuthAttributes extractAttributes = OAuthAttributes.of(registrationId, userNameAttributeName, attributes);
 
-        // OAuthAttributes를 토대로 사용자 생성 후 DB 저장
-        saveUser(attributes);
+        // extractAttributes를 토대로 사용자 생성 후 DB 저장
+        saveUser(extractAttributes);
 
-        log.info("========{}", attributes.getNameAttributeKey());
+        // 사용자 정보를 토대로 DefaultOAuth2User 객체 생성 후 반환
         return new DefaultOAuth2User(Collections.singleton(new SimpleGrantedAuthority("USER")),
-                attributes.getAttributes(),
-                attributes.getNameAttributeKey());
+                attributes, extractAttributes.getNameAttributeKey());
     }
 
     private void saveUser(OAuthAttributes attributes) {

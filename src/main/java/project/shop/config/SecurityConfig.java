@@ -12,8 +12,8 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 import project.shop.jwt.JwtAuthenticationEntryPoint;
 import project.shop.jwt.JwtAuthenticationFilter;
 import project.shop.jwt.JwtTokenUtils;
-import project.shop.oAuth.OAuth2SuccessHandler;
-import project.shop.oAuth.OAuth2UserService;
+import project.shop.oauth.OAuth2SuccessHandler;
+import project.shop.oauth.OAuth2UserService;
 
 @Configuration
 @RequiredArgsConstructor

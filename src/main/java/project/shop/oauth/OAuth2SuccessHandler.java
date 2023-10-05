@@ -1,4 +1,4 @@
-package project.shop.oAuth;
+package project.shop.oauth;
 
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
