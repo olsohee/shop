@@ -12,6 +12,10 @@ import project.shop.entity.user.User;
 import java.util.ArrayList;
 import java.util.Collection;
 
+/*
+ * Spring Security에서 사용자 정보를 담는 인터페이스인 UserDeailts를 구현한 클래스
+ * UserDeailts에 정의된 필드 외에 프로젝트에 필요한 사용자 정보들을 추가로 정의
+ */
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 @Getter
 public class CustomUserDetails implements UserDetails {
