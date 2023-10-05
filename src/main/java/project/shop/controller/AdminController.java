@@ -6,7 +6,6 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import project.shop.dto.product.AdminProductResponse;
 import project.shop.dto.product.ProductRequest;
-import project.shop.dto.product.ProductResponse;
 import project.shop.dto.product.UpdateProductRequest;
 import project.shop.service.ProductService;
 

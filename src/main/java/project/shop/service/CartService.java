@@ -39,15 +39,20 @@ public class CartService {
         // Cart
         Cart cart = user.getCart();
 
+        // 재고 수량 이상으로 장바구니 담기 요청을 한 경우 예외 발생
+        Product product = productRepository.findById(productId).orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_PRODUCT));
+        if(count > product.getStock()) {
+            throw new CustomException(ErrorCode.OUT_OF_STOCK);
+        }
+
         // 해당 상품이 이미 장바구니에 있는 상품인지 확인
-        CartProduct findCartProduct = findDuplicateCartProduct(cart, productId);
+        CartProduct findCartProduct = findDuplicateCartProduct(cart, product);
 
         if(findCartProduct != null) {
             // 이미 있는 상품이면 장바구니의 갯수만 수정
             this.updateCartProductCount(cart, findCartProduct, count);
         } else {
             // 새로운 상품이면 CartProduct 생성해서 Cart에 담아주기
-            Product product = productRepository.findById(productId).orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_ORDER));
             CartProduct cartProduct = CartProduct.createCartProduct(product, product.getPrice(), count);
             this.addNewCartProduct(cart, cartProduct);
         }
@@ -123,11 +128,11 @@ public class CartService {
 
 
     // 장바구니에 이미 있는 상품인지 확인
-    public CartProduct findDuplicateCartProduct(Cart cart, Long productId) {
+    public CartProduct findDuplicateCartProduct(Cart cart, Product product) {
 
         List<CartProduct> cartProducts = cart.getCartProducts();
         for(CartProduct cartProduct : cartProducts) {
-            if(cartProduct.getProduct().getId().equals(productId)) {
+            if(cartProduct.getProduct().equals(product)) {
                 return cartProduct;
             }
         }
