@@ -40,11 +40,11 @@ public class OAuth2SuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
         CustomOAuth2User oAuth2User= (CustomOAuth2User) authentication.getPrincipal();
 
         // DB에서 사용자 조회
-        User user = userRepository.findByEmail(oAuth2User.getEmail()).orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_USER));
-        CustomUserDetails customUserDetails = CustomUserDetails.createCustomUserDetails(user);
+//        User user = userRepository.findByEmail(oAuth2User.getEmail()).orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_USER));
+//        CustomUserDetails customUserDetails = CustomUserDetails.createCustomUserDetails(user);
 
         // 토큰 발급
-        JwtTokenDto tokenDto = jwtTokenUtils.generateToken(customUserDetails);
+        JwtTokenDto tokenDto = jwtTokenUtils.generateToken(oAuth2User.getEmail());
 
         // 파라미터로 토큰을 전달하면서 리다이렉트
         String redirectUrl = String.format("http://localhost:8080/oauth/login?access_token=%s&refresh_token=%s",

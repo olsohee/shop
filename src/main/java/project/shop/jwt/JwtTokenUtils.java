@@ -40,10 +40,10 @@ public class JwtTokenUtils {
     /*
      * 로그인시 JWT 토큰 발급(Access, Refresh Token)
      */
-    public JwtTokenDto generateToken(CustomUserDetails customUserDetails) {
+    public JwtTokenDto generateToken(String email) {
 
         // JWT의 페이로드에 사용자의 email 저장
-        Claims claims = Jwts.claims().setSubject(customUserDetails.getEmail());
+        Claims claims = Jwts.claims().setSubject(email);
 
         // Access Token
         String accessToken = Jwts.builder()

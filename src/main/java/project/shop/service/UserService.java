@@ -70,12 +70,12 @@ public class UserService {
         }
 
         // JWT 생성
-        JwtTokenDto jwtTokenDto = jwtTokenUtils.generateToken(CustomUserDetails.createCustomUserDetails(user));
+        JwtTokenDto jwtTokenDto = jwtTokenUtils.generateToken(user.getEmail());
 
         // Refresh Token DB에 저장
         refreshTokenService.save(new RefreshToken(dto.getEmail(), jwtTokenDto.getRefreshToken()));
 
-        return jwtTokenUtils.generateToken(CustomUserDetails.createCustomUserDetails(user));
+        return jwtTokenDto;
     }
 
     @Transactional
@@ -96,8 +96,7 @@ public class UserService {
         }
 
         // Access Token, Refresh Token 재발급
-        User user = userRepository.findByEmail(email).orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_USER));
-        JwtTokenDto jwtTokenDto = jwtTokenUtils.generateToken(CustomUserDetails.createCustomUserDetails(user));
+        JwtTokenDto jwtTokenDto = jwtTokenUtils.generateToken(email);
 
         // DB에 새로운 Refresh Token 저장
         refreshTokenService.save(new RefreshToken(email, jwtTokenDto.getRefreshToken()));
