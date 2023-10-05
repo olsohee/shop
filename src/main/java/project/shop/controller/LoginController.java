@@ -38,15 +38,10 @@ public class LoginController {
     }
 
     /**
-     * [GET] /oauth2/authorization/kakao
-     * 카카오 로그인 요청
+     * [GET] /oauth/login
+     * OAuth 로그인 후 토큰 발급 받는 api
      */
-
-    /**
-     * [GET] /login/kakao
-     * 카카오 로그인 후 토큰 발급 받는 api
-     */
-    @GetMapping("/login/kakao")
+    @GetMapping("/oauth/login")
     public JwtTokenDto login(@RequestParam(name = "access_token") String accessToken,
                              @RequestParam(name = "refresh_token") String refreshToken) {
 

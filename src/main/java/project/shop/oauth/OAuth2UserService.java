@@ -6,7 +6,6 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.oauth2.client.userinfo.DefaultOAuth2UserService;
 import org.springframework.security.oauth2.client.userinfo.OAuth2UserRequest;
 import org.springframework.security.oauth2.core.OAuth2AuthenticationException;
-import org.springframework.security.oauth2.core.user.DefaultOAuth2User;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Service;
 import project.shop.entity.user.Authority;
@@ -29,14 +28,17 @@ public class OAuth2UserService extends DefaultOAuth2UserService {
         log.info("OAuth2UserService.loadUser() 실행");
 
         // 사용자 정보 조회
-        OAuth2User oAuth2User = super.loadUser(userRequest);
+        OAuth2User oAuth2User = super.loadUser(userRequest); // 여기서 예외 발생
 
-        // registrationId
+        // (1) registrationId
         String registrationId = userRequest.getClientRegistration().getRegistrationId();
-        // userNameAttributeName: OAuth 로그인 시 키(PK)가 되는 값
+
+        // (2) userNameAttributeName: OAuth 로그인 시 키(PK)가 되는 값
         String userNameAttributeName = userRequest.getClientRegistration()
                 .getProviderDetails().getUserInfoEndpoint().getUserNameAttributeName();
-        // attributes: 사용자 정보를 담은 Json 객체
+        log.info("userNameAttributeName={}", userNameAttributeName);
+
+        // (3) attributes: 사용자 정보를 담은 Json 객체
         Map<String, Object> attributes = oAuth2User.getAttributes();
 
         // 정제된 사용자 정보를 담는 OAuthAttributes 생성
@@ -46,15 +48,16 @@ public class OAuth2UserService extends DefaultOAuth2UserService {
         saveUser(extractAttributes);
 
         // 사용자 정보를 토대로 DefaultOAuth2User 객체 생성 후 반환
-        return new DefaultOAuth2User(Collections.singleton(new SimpleGrantedAuthority("USER")),
-                attributes, extractAttributes.getNameAttributeKey());
+        return new CustomOAuth2User(Collections.singleton(new SimpleGrantedAuthority("USER")),
+                extractAttributes.getAttributes(), extractAttributes.getNameAttributeKey(),
+                extractAttributes.getEmail(), extractAttributes.getName());
     }
 
-    private void saveUser(OAuthAttributes attributes) {
+    private void saveUser(OAuthAttributes extractAttributes) {
 
         // 이미 존재하는 이메일이면 DB 저장 X, 새로운 이메일인 경우에만 DB 저장 O
-        if(userRepository.findByEmail(attributes.getEmail()).isEmpty()) {
-            User user = User.createUser(attributes.getNickname(), attributes.getEmail(),
+        if(userRepository.findByEmail(extractAttributes.getEmail()).isEmpty()) {
+            User user = User.createUser(extractAttributes.getName(), extractAttributes.getEmail(),
                     null, null, Authority.ROLE_USER);
             userRepository.save(user);
         }

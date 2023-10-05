@@ -36,7 +36,6 @@ public class SecurityConfig {
                 .addFilterBefore(new JwtAuthenticationFilter(jwtTokenUtils), UsernamePasswordAuthenticationFilter.class)
 
                 .oauth2Login(oauth2Login -> oauth2Login
-                        .loginPage("/login")
                         .successHandler(oAuth2SuccessHandler)
                         .userInfoEndpoint(userInfo -> userInfo
                                 .userService(oAuth2UserService)
