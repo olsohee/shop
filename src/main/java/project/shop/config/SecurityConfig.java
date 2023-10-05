@@ -12,6 +12,8 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 import project.shop.jwt.JwtAuthenticationEntryPoint;
 import project.shop.jwt.JwtAuthenticationFilter;
 import project.shop.jwt.JwtTokenUtils;
+import project.shop.oAuth.OAuth2SuccessHandler;
+import project.shop.oAuth.OAuth2UserService;
 
 @Configuration
 @RequiredArgsConstructor
@@ -19,6 +21,8 @@ public class SecurityConfig {
 
     private final JwtTokenUtils jwtTokenUtils;
     private final JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint;
+    private final OAuth2SuccessHandler oAuth2SuccessHandler;
+    private final OAuth2UserService oAuth2UserService;
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
@@ -31,8 +35,17 @@ public class SecurityConfig {
                                 .anyRequest().authenticated())
                 .addFilterBefore(new JwtAuthenticationFilter(jwtTokenUtils), UsernamePasswordAuthenticationFilter.class)
 
+                .oauth2Login(oauth2Login -> oauth2Login
+                        .loginPage("/login")
+                        .successHandler(oAuth2SuccessHandler)
+                        .userInfoEndpoint(userInfo -> userInfo
+                                .userService(oAuth2UserService)
+                        )
+                )
+
                 .exceptionHandling()
                 .authenticationEntryPoint(jwtAuthenticationEntryPoint)
+
         ;
 
         return http.build();

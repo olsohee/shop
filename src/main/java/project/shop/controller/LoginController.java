@@ -3,9 +3,7 @@ package project.shop.controller;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import project.shop.dto.login.JoinRequest;
 import project.shop.dto.login.JoinResponse;
 import project.shop.jwt.JwtTokenDto;
@@ -37,6 +35,22 @@ public class LoginController {
     public JwtTokenDto login(@RequestBody LoginRequest dto) {
 
         return userService.createToken(dto);
+    }
+
+    /**
+     * [GET] /oauth2/authorization/kakao
+     * 카카오 로그인 요청
+     */
+
+    /**
+     * [GET] /login/kakao
+     * 카카오 로그인 후 토큰 발급 받는 api
+     */
+    @GetMapping("/login/kakao")
+    public JwtTokenDto login(@RequestParam(name = "access_token") String accessToken,
+                             @RequestParam(name = "refresh_token") String refreshToken) {
+
+        return new JwtTokenDto(accessToken, refreshToken);
     }
 
     /**
