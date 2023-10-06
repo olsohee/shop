@@ -13,7 +13,7 @@ import project.shop.jwt.JwtAuthenticationEntryPoint;
 import project.shop.jwt.JwtAuthenticationFilter;
 import project.shop.jwt.JwtTokenUtils;
 import project.shop.oauth.OAuth2SuccessHandler;
-import project.shop.oauth.OAuth2UserService;
+import project.shop.oauth.CustomOAuth2UserService;
 
 @Configuration
 @RequiredArgsConstructor
@@ -22,7 +22,7 @@ public class SecurityConfig {
     private final JwtTokenUtils jwtTokenUtils;
     private final JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint;
     private final OAuth2SuccessHandler oAuth2SuccessHandler;
-    private final OAuth2UserService oAuth2UserService;
+    private final CustomOAuth2UserService customOAuth2UserService;
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
@@ -38,7 +38,7 @@ public class SecurityConfig {
                 .oauth2Login(oauth2Login -> oauth2Login
                         .successHandler(oAuth2SuccessHandler)
                         .userInfoEndpoint(userInfo -> userInfo
-                                .userService(oAuth2UserService)
+                                .userService(customOAuth2UserService)
                         )
                 )
 

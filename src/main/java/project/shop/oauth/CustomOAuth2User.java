@@ -7,6 +7,9 @@ import org.springframework.security.oauth2.core.user.DefaultOAuth2User;
 import java.util.Collection;
 import java.util.Map;
 
+/*
+ * DefaultOAuth2User를 상속받고, email과 name을 추가로 가짐
+ */
 @Getter
 public class CustomOAuth2User extends DefaultOAuth2User {
 

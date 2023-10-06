@@ -15,17 +15,21 @@ import project.shop.repository.UserRepository;
 import java.util.Collections;
 import java.util.Map;
 
+/*
+ * 각 소셜에서 받아온 데이터를 OAuthAttributes로 변환 후, DB에 사용자 정보 저장
+ * OAuth2User를 반환하며 OAuth2SuccessHandler가 실행됨
+ */
 @Service
 @RequiredArgsConstructor
 @Slf4j
-public class OAuth2UserService extends DefaultOAuth2UserService {
+public class CustomOAuth2UserService extends DefaultOAuth2UserService {
 
     private final UserRepository userRepository;
 
     @Override
     public OAuth2User loadUser(OAuth2UserRequest userRequest) throws OAuth2AuthenticationException {
 
-        log.info("OAuth2UserService.loadUser() 실행");
+        log.info("CustomOAuth2UserService.loadUser() 실행");
 
         // 사용자 정보 조회
         OAuth2User oAuth2User = super.loadUser(userRequest); // 여기서 예외 발생
@@ -47,7 +51,7 @@ public class OAuth2UserService extends DefaultOAuth2UserService {
         // extractAttributes를 토대로 사용자 생성 후 DB 저장
         saveUser(extractAttributes);
 
-        // 사용자 정보를 토대로 DefaultOAuth2User 객체 생성 후 반환
+        // 사용자 정보를 토대로 CustomOAuth2User 객체 생성 후 반환
         return new CustomOAuth2User(Collections.singleton(new SimpleGrantedAuthority("USER")),
                 extractAttributes.getAttributes(), extractAttributes.getNameAttributeKey(),
                 extractAttributes.getEmail(), extractAttributes.getName());
