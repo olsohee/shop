@@ -55,6 +55,15 @@ public class MypageService {
         return AddressListResponse.createResponse(user.getAddresses());
     }
 
+    public AddressListResponse findAll(HttpServletRequest request) {
+
+        // User
+        User user = this.findUserFromRequest(request);
+
+        List<Address> addresses = user.getAddresses();
+        return AddressListResponse.createResponse(addresses);
+    }
+
     //== private 메서드 ==//
 
     /*
