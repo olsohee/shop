@@ -1,6 +1,7 @@
 package project.shop.init;
 
 import jakarta.annotation.PostConstruct;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
@@ -12,18 +13,17 @@ import project.shop.repository.ProductRepository;
 import project.shop.repository.UserRepository;
 import project.shop.service.CartService;
 
+@Transactional
 @Component
 @RequiredArgsConstructor
 public class Init {
 
     private final InitUser initUser;
-    private final InitProduct initProduct;
 
     @PostConstruct
     public void init() {
 
         initUser.init();
-        initProduct.init();
     }
 
     @Component
@@ -32,7 +32,6 @@ public class Init {
 
         private final UserRepository userRepository;
         private final PasswordEncoder passwordEncoder;
-        private final CartService cartService;
 
         public void init() {
 
@@ -43,29 +42,25 @@ public class Init {
             userRepository.save(user1);
 
             // 회원
-            User user2 = User.createUser("min", "min@naver.com",
+            User user2 = User.createUser("kim", "kim@naver.com",
                     passwordEncoder.encode("1111"), "01012345678",
                     Authority.ROLE_USER);
             userRepository.save(user2);
-        }
-    }
 
-    @Component
-    @RequiredArgsConstructor
-    static class InitProduct {
+            User user3 = User.createUser("lee", "lee@daum.net",
+                    passwordEncoder.encode("2222"), "01011112222",
+                    Authority.ROLE_USER);
+            userRepository.save(user3);
 
-        private final ProductRepository productRepository;
+            User user4 = User.createUser("park", "park@naver.com",
+                    passwordEncoder.encode("3333"), "01044443333",
+                    Authority.ROLE_USER);
+            userRepository.save(user4);
 
-        public void init() {
-
-            Product product1 = Product.createProduct("삼겹살", 15000, 15, ProductCategory.PORK);
-            productRepository.save(product1);
-
-            Product product2 = Product.createProduct("생과일 자몽 주스", 8000, 10, ProductCategory.JUICE);
-            productRepository.save(product2);
-
-            Product product3 = Product.createProduct("갈치", 9900, 25, ProductCategory.FISH);
-            productRepository.save(product3);
+            User user5 = User.createUser("min", "min@naver.com",
+                    passwordEncoder.encode("4444"), "01011221122",
+                    Authority.ROLE_USER);
+            userRepository.save(user5);
         }
     }
 }

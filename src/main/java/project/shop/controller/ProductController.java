@@ -24,7 +24,8 @@ public class ProductController {
      * 상품 목록 조회
      */
     @GetMapping("/products")
-    public Page<ProductListResponse> findAll(@PageableDefault(size = 5, sort = "createdDate", direction = Sort.Direction.DESC) Pageable pageable) {
+    public Page<ProductListResponse> findAll(@PageableDefault(size = 10, page = 0,
+                                                    sort = "createdDate", direction = Sort.Direction.DESC) Pageable pageable) {
 
         return productService.findAll(pageable);
     }
@@ -45,7 +46,8 @@ public class ProductController {
      */
     @GetMapping("/categories/{category}")
     public Page<ProductListResponse> findByCategory(@PathVariable String category,
-                                                    @PageableDefault(size = 5, sort = "createdDate", direction = Sort.Direction.DESC) Pageable pageable) {
+                                                    @PageableDefault(size = 10, page = 0,
+                                                            sort = "createdDate", direction = Sort.Direction.DESC) Pageable pageable) {
 
         return productService.findByCategory(category, pageable);
     }

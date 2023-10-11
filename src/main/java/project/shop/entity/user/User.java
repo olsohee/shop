@@ -35,6 +35,7 @@ public class User extends BaseEntity {
     private List<Address> addresses = new ArrayList<>();
 
     @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JoinColumn(name = "cart_id")
     private Cart cart;
 
     //== 연관관계 메서드 ==//
