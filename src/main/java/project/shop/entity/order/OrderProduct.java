@@ -24,6 +24,7 @@ public class OrderProduct {
     Order order;
 
     @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "product_id")
     Product product;
 
     //== 생성 메서드 ==//

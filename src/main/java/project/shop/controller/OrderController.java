@@ -51,7 +51,7 @@ public class OrderController {
      */
     @PutMapping("/orders/{orderId}/cancel")
     public OrderResponse cancelOrder(HttpServletRequest request,
-                                   @PathVariable Long orderId) {
+                                     @PathVariable Long orderId) {
 
         return orderService.cancel(request, orderId);
     }

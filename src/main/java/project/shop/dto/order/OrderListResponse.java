@@ -7,6 +7,7 @@ import project.shop.entity.order.OrderStatus;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /*
  * 주문 내역 목록 조회
@@ -14,14 +15,14 @@ import java.util.List;
 @Data
 public class OrderListResponse {
 
-   private List<EachOrderResponse> eachOrderResponses = new ArrayList<>();
+   private List<EachOrderResponse> eachOrderResponses;
 
    public static OrderListResponse createResponse(List<Order> orders) {
 
        OrderListResponse response = new OrderListResponse();
-       for (Order order : orders) {
-           response.eachOrderResponses.add(EachOrderResponse.createResponse(order));
-       }
+       response.eachOrderResponses = orders.stream()
+                                        .map(o -> EachOrderResponse.createResponse(o))
+                                        .collect(Collectors.toList());
        return response;
    }
 

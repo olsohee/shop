@@ -5,18 +5,19 @@ import project.shop.entity.user.Address;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Data
 public class AddressListResponse {
 
-    private List<AddressResponse> addressList = new ArrayList<>();
+    private List<AddressResponse> addressList;
 
     public static AddressListResponse createResponse(List<Address> addresses) {
 
         AddressListResponse response = new AddressListResponse();
-        for (Address address : addresses) {
-            response.addressList.add(AddressResponse.createResponse(address));
-        }
+        response.addressList = addresses.stream()
+                                .map(a -> AddressResponse.createResponse(a))
+                                .collect(Collectors.toList());
         return response;
     }
 

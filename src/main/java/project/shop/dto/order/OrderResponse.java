@@ -8,6 +8,7 @@ import project.shop.entity.order.OrderStatus;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /*
  * 주문 내역 단일 조회
@@ -30,10 +31,9 @@ public class OrderResponse {
         response.totalPrice = order.getTotalPrice();
         response.orderStatus = order.getOrderStatus();
         response.orderDate = order.getOrderDate();
-
-        for (OrderProduct orderProduct : order.getOrderProducts()) {
-            response.orderProducts.add(OrderProductResponse.createResponse(orderProduct));
-        }
+        response.orderProducts = order.getOrderProducts().stream()
+                .map(op -> OrderProductResponse.createResponse(op))
+                .collect(Collectors.toList());
         return response;
     }
 

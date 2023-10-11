@@ -6,6 +6,7 @@ import project.shop.entity.product.ProductImage;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Data
 public class AdminProductResponse {
@@ -14,7 +15,7 @@ public class AdminProductResponse {
     private String productCategory;
     private Integer price;
     private Integer stock;
-    private List<String> storeFilenames = new ArrayList<>();
+    private List<String> storeFilenames;
 
     public static AdminProductResponse createResponse(Product product) {
 
@@ -23,9 +24,9 @@ public class AdminProductResponse {
         response.productCategory = product.getProductCategory().getTitle();
         response.price = product.getPrice();
         response.stock = product.getStock();
-        for (ProductImage productImage : product.getProductImages()) {
-            response.storeFilenames.add(productImage.getStoreFilename());
-        }
+        response.storeFilenames = product.getProductImages().stream()
+                                    .map(pi -> pi.getStoreFilename())
+                                    .collect(Collectors.toList());
         return response;
     }
 }
