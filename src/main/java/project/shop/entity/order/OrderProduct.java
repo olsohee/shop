@@ -35,7 +35,12 @@ public class OrderProduct {
         orderProduct.count = count;
         orderProduct.product = product;
 
+        // 재고 줄이기
         product.reduceStock(count);
+
+        // 판매량 늘리기
+        product.addSalesCount(count);
+
         return orderProduct;
     }
 

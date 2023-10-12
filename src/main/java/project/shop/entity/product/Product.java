@@ -28,6 +28,8 @@ public class Product extends BaseEntity {
 
     private ProductCategory productCategory;
 
+    private int salesCount;
+
     @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true)
     List<ProductImage> productImages = new ArrayList<>();
 
@@ -82,5 +84,10 @@ public class Product extends BaseEntity {
     public void addStock(int stock) {
 
         this.stock += stock;
+    }
+
+    public void addSalesCount(int salesCount) {
+
+        this.salesCount += salesCount;
     }
 }
