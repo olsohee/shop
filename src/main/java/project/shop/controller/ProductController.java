@@ -20,17 +20,6 @@ public class ProductController {
     private final ProductService productService;
 
     /**
-     * [GET] /products
-     * 상품 목록 조회
-     */
-    @GetMapping("/products")
-    public Page<ProductListResponse> findAll(@PageableDefault(size = 10, page = 0,
-                                                    sort = "createdDate", direction = Sort.Direction.DESC) Pageable pageable) {
-
-        return productService.findAll(pageable);
-    }
-
-    /**
      * [GET] /products/{productId}
      * 상품 단일 조회
      */
@@ -38,6 +27,17 @@ public class ProductController {
     public ProductResponse findOne(@PathVariable Long productId) {
 
         return productService.findById(productId);
+    }
+
+    /**
+     * [GET] /products
+     * 상품 목록 조회
+     */
+    @GetMapping("/products")
+    public Page<ProductListResponse> findAll(@PageableDefault(size = 10, page = 0,
+                                                sort = "createdDate", direction = Sort.Direction.DESC) Pageable pageable) {
+
+        return productService.findAll(pageable);
     }
 
     /**
